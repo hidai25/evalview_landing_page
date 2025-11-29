@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Loader2, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
 
-// PLACEHOLDER: User should replace this URL with their deployed Google Apps Script URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1-2j3k4.../exec'; 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrFI9xuI5Ai4MgOvrOiZmhkRbhgR-_RtMk6t6Aj-gwc6UYD_AjiQVXuiywdmG39mQ/exec'; 
 
 interface WaitlistFormProps {
   variant?: 'hero' | 'footer';
@@ -18,25 +17,17 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ variant = 'hero' }) => {
 
     setStatus('loading');
 
-    // Simulate submission for the demo if URL is placeholder
     try {
-      if (GOOGLE_SCRIPT_URL.includes('AKfycbz1-2j3k4')) {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setStatus('success');
-        return;
-      }
+      // Use form data format - works reliably with Google Apps Script
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('timestamp', new Date().toISOString());
+      formData.append('source', 'evalview-landing-page');
 
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          timestamp: new Date().toISOString(),
-          source: 'evalview-landing-page'
-        })
+        body: formData
       });
       setStatus('success');
     } catch (error) {
