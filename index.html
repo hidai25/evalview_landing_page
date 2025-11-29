@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO & Meta Tags -->
+    <title>EvalView - pytest for AI Agents | Open Source Testing Framework</title>
+    <meta name="description" content="Test AI agents like you test code. Catch hallucinations, regressions, and cost spikes before production. Works with LangGraph, CrewAI, OpenAI, and more. 100% open source.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://evalview.com">
+    <meta property="og:title" content="EvalView - pytest for AI Agents">
+    <meta property="og:description" content="Catch hallucinations, regressions, and cost spikes before production. Open source testing framework for AI agents.">
+    <meta property="og:image" content="https://evalview.com/og-image.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EvalView - pytest for AI Agents">
+    <meta name="twitter:description" content="Catch hallucinations, regressions, and cost spikes before production.">
+    <meta name="twitter:image" content="https://evalview.com/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                blue: '#3B82F6',
+                cyan: '#06B6D4',
+                teal: '#14B8A6',
+                dark: '#020617', // Richer black
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shine': 'shine 2s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              shine: {
+                '0%': { backgroundPosition: '200% center' },
+                '100%': { backgroundPosition: '-200% center' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #000000;
+        color: #F8FAFC;
+        overflow-x: hidden;
+      }
+      
+      /* Subtle Grid Background */
+      .bg-grid {
+        background-size: 50px 50px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #60A5FA, #22D3EE, #34D399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient-move 5s ease infinite;
+      }
+
+      @keyframes gradient-move {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(6, 182, 212, 0.3); /* Cyan border on hover */
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+      }
+
+      .glass-nav {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Glow Effects */
+      .glow-spot {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #020617;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
