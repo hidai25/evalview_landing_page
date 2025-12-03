@@ -188,12 +188,12 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Clients / Integration Ticker */}
+        {/* Supported Frameworks */}
         <section className="py-10 border-y border-white/5 bg-white/[0.01]">
           <div className="max-w-7xl mx-auto px-4 overflow-hidden">
-             <div className="flex items-center justify-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
-                {/* Mock Logo Text for elegant minimalism */}
-                {['LangChain', 'OpenAI', 'Anthropic', 'CrewAI', 'LangGraph', 'LlamaIndex'].map(brand => (
+             <p className="text-center text-sm text-slate-500 mb-6 uppercase tracking-widest">Works with your favorite frameworks</p>
+             <div className="flex items-center justify-center gap-8 md:gap-16 opacity-60 hover:opacity-100 transition-all duration-700">
+                {['LangGraph', 'CrewAI', 'OpenAI', 'Anthropic', 'AutoGen', 'Dify'].map(brand => (
                   <span key={brand} className="text-lg md:text-xl font-bold font-sans tracking-tight text-white cursor-default hover:text-cyan-400 transition-colors">
                     {brand}
                   </span>
@@ -221,7 +221,7 @@ const App: React.FC = () => {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>100% Open Source (MIT)</span>
+                    <span>100% Open Source (Apache 2.0)</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
@@ -610,7 +610,7 @@ const App: React.FC = () => {
           </div>
 
           <div className="text-sm text-slate-600">
-            <p>© 2025 EvalView. MIT License.</p>
+            <p>© 2025 EvalView. Apache 2.0 License.</p>
           </div>
         </div>
       </footer>
