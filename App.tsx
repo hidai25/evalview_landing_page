@@ -123,7 +123,7 @@ const App: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                v0.2.0 Public Beta
+                v0.2.4 Public Beta
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
@@ -628,7 +628,7 @@ const App: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold">
                       <Tag className="w-3 h-3" />
-                      v0.2.0
+                      v0.2.4
                     </span>
                     <span className="text-slate-500 text-sm">February 2026</span>
                     <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">Latest</span>
