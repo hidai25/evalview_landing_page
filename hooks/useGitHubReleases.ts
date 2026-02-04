@@ -25,6 +25,7 @@ export interface ParsedRelease {
 
 const GITHUB_REPO = 'hidai25/EvalView';
 const CACHE_KEY = 'evalview_github_releases';
+const CACHE_KEY_REPO = 'evalview_github_repo';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 function parseReleaseBody(body: string): { features: string[]; improvements: string[]; bugFixes: string[]; other: string[] } {
@@ -98,68 +99,96 @@ function formatDate(dateString: string): string {
 export function useGitHubReleases() {
   const [releases, setReleases] = useState<ParsedRelease[]>([]);
   const [latestVersion, setLatestVersion] = useState<string>('');
+  const [starCount, setStarCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchReleases() {
+    async function fetchData() {
       try {
         // Check cache first
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-          const { data, timestamp } = JSON.parse(cached);
+        const cachedReleases = localStorage.getItem(CACHE_KEY);
+        const cachedRepo = localStorage.getItem(CACHE_KEY_REPO);
+
+        let useCachedReleases = false;
+        let useCachedRepo = false;
+
+        if (cachedReleases) {
+          const { data, timestamp } = JSON.parse(cachedReleases);
           if (Date.now() - timestamp < CACHE_DURATION) {
             setReleases(data.releases);
             setLatestVersion(data.latestVersion);
-            setLoading(false);
-            return;
+            useCachedReleases = true;
           }
         }
 
-        const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases`);
-
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status}`);
+        if (cachedRepo) {
+          const { data, timestamp } = JSON.parse(cachedRepo);
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            setStarCount(data.starCount);
+            useCachedRepo = true;
+          }
         }
 
-        const data: GitHubRelease[] = await response.json();
+        if (useCachedReleases && useCachedRepo) {
+          setLoading(false);
+          return;
+        }
 
-        const parsedReleases: ParsedRelease[] = data.map((release, index) => {
-          const { features, improvements, bugFixes, other } = parseReleaseBody(release.body);
-          return {
-            version: release.tag_name.replace(/^v/, ''),
-            title: release.name || `Release ${release.tag_name}`,
-            date: formatDate(release.published_at),
-            isLatest: index === 0,
-            isPrerelease: release.prerelease,
-            url: release.html_url,
-            features,
-            improvements,
-            bugFixes,
-            other,
-          };
-        });
+        // Fetch releases if not cached
+        if (!useCachedReleases) {
+          const releasesResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases`);
+          if (releasesResponse.ok) {
+            const data: GitHubRelease[] = await releasesResponse.json();
+            const parsedReleases: ParsedRelease[] = data.map((release, index) => {
+              const { features, improvements, bugFixes, other } = parseReleaseBody(release.body);
+              return {
+                version: release.tag_name.replace(/^v/, ''),
+                title: release.name || `Release ${release.tag_name}`,
+                date: formatDate(release.published_at),
+                isLatest: index === 0,
+                isPrerelease: release.prerelease,
+                url: release.html_url,
+                features,
+                improvements,
+                bugFixes,
+                other,
+              };
+            });
+            const latest = parsedReleases[0]?.version || '';
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+              data: { releases: parsedReleases, latestVersion: latest },
+              timestamp: Date.now(),
+            }));
+            setReleases(parsedReleases);
+            setLatestVersion(latest);
+          }
+        }
 
-        const latest = parsedReleases[0]?.version || '';
+        // Fetch repo info for star count if not cached
+        if (!useCachedRepo) {
+          const repoResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`);
+          if (repoResponse.ok) {
+            const repoData = await repoResponse.json();
+            const stars = repoData.stargazers_count || 0;
+            localStorage.setItem(CACHE_KEY_REPO, JSON.stringify({
+              data: { starCount: stars },
+              timestamp: Date.now(),
+            }));
+            setStarCount(stars);
+          }
+        }
 
-        // Cache the results
-        localStorage.setItem(CACHE_KEY, JSON.stringify({
-          data: { releases: parsedReleases, latestVersion: latest },
-          timestamp: Date.now(),
-        }));
-
-        setReleases(parsedReleases);
-        setLatestVersion(latest);
         setLoading(false);
       } catch (err) {
-        console.error('Failed to fetch GitHub releases:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch releases');
+        console.error('Failed to fetch GitHub data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
         setLoading(false);
       }
     }
 
-    fetchReleases();
+    fetchData();
   }, []);
 
-  return { releases, latestVersion, loading, error };
+  return { releases, latestVersion, starCount, loading, error };
 }
