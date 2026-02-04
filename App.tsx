@@ -34,7 +34,16 @@ import {
   Tag,
   Rocket,
   Bug,
-  Wrench
+  Wrench,
+  FlaskConical,
+  GitPullRequest,
+  LineChart,
+  MessageCircle,
+  Repeat,
+  Eye,
+  Sparkle,
+  TestTube2,
+  Cpu
 } from 'lucide-react';
 import Terminal from './components/Terminal';
 import WaitlistForm from './components/WaitlistForm';
@@ -140,7 +149,7 @@ const App: React.FC = () => {
 
               {/* Badges */}
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-slate-300 mb-8">
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400"/> 7+ Framework Support</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400"/> 9+ Framework Support</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400"/> Comprehensive Evaluation</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400"/> 100% Open Source</span>
               </div>
@@ -205,9 +214,9 @@ const App: React.FC = () => {
         <section className="py-10 border-y border-white/5 bg-white/[0.01]">
           <div className="max-w-7xl mx-auto px-4 overflow-hidden">
              <p className="text-center text-sm text-slate-500 mb-6 uppercase tracking-widest">Works with your favorite frameworks</p>
-             <div className="flex items-center justify-center gap-8 md:gap-16 opacity-60 hover:opacity-100 transition-all duration-700">
-                {['LangGraph', 'CrewAI', 'OpenAI', 'Anthropic', 'AutoGen', 'Dify'].map(brand => (
-                  <span key={brand} className="text-lg md:text-xl font-bold font-sans tracking-tight text-white cursor-default hover:text-cyan-400 transition-colors">
+             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:gap-x-12 opacity-60 hover:opacity-100 transition-all duration-700">
+                {['LangGraph', 'CrewAI', 'OpenAI', 'Anthropic', 'AutoGen', 'Dify', 'LangServe', 'Ollama', 'Claude Code'].map(brand => (
+                  <span key={brand} className="text-base md:text-lg font-bold font-sans tracking-tight text-white cursor-default hover:text-cyan-400 transition-colors">
                     {brand}
                   </span>
                 ))}
@@ -300,22 +309,24 @@ const App: React.FC = () => {
               <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
               {/* Feature Group 1: Testing & Evaluation */}
-              <div className="glass-card p-8 rounded-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-lg bg-cyan-500/10 text-cyan-400"><Search className="w-6 h-6" /></div>
-                  <h3 className="text-xl font-bold text-white">Testing & Evaluation</h3>
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400"><Search className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Testing & Evaluation</h3>
                 </div>
-                <ul className="grid gap-4">
+                <ul className="grid gap-3">
                   {[
-                    "YAML-based test cases",
-                    "7 evaluation metrics (tool, sequence, cost, etc)",
-                    "LLM-as-judge (Configurable)",
-                    "Configurable scoring weights"
+                    "YAML-based test definitions",
+                    "Weighted scoring (tool, output, sequence)",
+                    "LLM-as-judge with custom prompts",
+                    "Sequence matching (exact/subsequence/unordered)",
+                    "Output validation (contains, JSON schema)",
+                    "Hallucination & safety detection"
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -323,20 +334,137 @@ const App: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Feature Group 2: Developer Experience */}
-              <div className="glass-card p-8 rounded-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-lg bg-blue-500/10 text-blue-400"><Code2 className="w-6 h-6" /></div>
-                  <h3 className="text-xl font-bold text-white">Developer Experience</h3>
+              {/* Feature Group 2: Test Generation & Coverage */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400"><FlaskConical className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Test Generation & Coverage</h3>
                 </div>
-                <ul className="grid gap-4">
+                <ul className="grid gap-3">
+                  {[
+                    "Auto-generate 100+ test variations",
+                    "Interactive recording mode",
+                    "Behavior coverage tracking",
+                    "Tasks, tools & paths metrics",
+                    "Edge case & boundary testing",
+                    "Expand 5 tests → 500 tests"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 3: Statistical & Reliability */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-400"><LineChart className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Statistical & Reliability</h3>
+                </div>
+                <ul className="grid gap-3">
+                  {[
+                    "Multiple runs per test (--runs N)",
+                    "pass@k & pass^k metrics",
+                    "Flaky test detection & handling",
+                    "Configurable pass rates",
+                    "Mean, std dev, percentiles",
+                    "Confidence intervals"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 4: Regression & Baselines */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-400"><GitPullRequest className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Regression & Baselines</h3>
+                </div>
+                <ul className="grid gap-3">
+                  {[
+                    "Golden baseline management",
+                    "Save, annotate & compare baselines",
+                    "Regression status detection",
+                    "Configurable strictness levels",
+                    "Tool & output change detection",
+                    "Block deployments on regression"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 5: CI/CD & Automation */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-400"><Repeat className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">CI/CD & Automation</h3>
+                </div>
+                <ul className="grid gap-3">
+                  {[
+                    "GitHub Actions integration",
+                    "GitLab CI & CircleCI support",
+                    "Configurable failure thresholds",
+                    "Automatic retries",
+                    "Parallel test execution",
+                    "HTML & JSON reports"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 6: Tracing & Observability */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-pink-500/10 text-pink-400"><Eye className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Tracing & Observability</h3>
+                </div>
+                <ul className="grid gap-3">
+                  {[
+                    "Full E2E trace capture",
+                    "Span types: Agent, LLM, Tool, HTTP",
+                    "Token & cost attribution per step",
+                    "Latency measurement",
+                    "Privacy controls & auto-redaction",
+                    "JSONL export format"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 7: Developer Experience */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400"><Code2 className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Developer Experience</h3>
+                </div>
+                <ul className="grid gap-3">
                   {[
                     "Auto-connect to any framework",
-                    "Parallel execution (8x faster)",
+                    "Interactive chat mode (natural language)",
                     "Watch mode for rapid iteration",
-                    "Rich console + HTML reports"
+                    "Verbose debugging & diagnostics",
+                    "Demo mode (no API key needed)",
+                    "Quickstart wizard"
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -344,41 +472,45 @@ const App: React.FC = () => {
                 </ul>
               </div>
 
-               {/* Feature Group 3: Regression Tracking */}
-               <div className="glass-card p-8 rounded-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-lg bg-purple-500/10 text-purple-400"><Database className="w-6 h-6" /></div>
-                  <h3 className="text-xl font-bold text-white">Regression Tracking</h3>
+              {/* Feature Group 8: Security & Safety */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-red-500/10 text-red-400"><Shield className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Security & Safety</h3>
                 </div>
-                <ul className="grid gap-4">
+                <ul className="grid gap-3">
                   {[
-                    "SQLite database tracking",
-                    "Baseline comparison",
-                    "Automatic regression detection",
-                    "Git integration"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Feature Group 4: Security & Production */}
-              <div className="glass-card p-8 rounded-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-lg bg-red-500/10 text-red-400"><Shield className="w-6 h-6" /></div>
-                  <h3 className="text-xl font-bold text-white">Security & Production</h3>
-                </div>
-                <ul className="grid gap-4">
-                  {[
-                    "SSRF protection",
+                    "SSRF protection (blocks private IPs)",
                     "PII detection",
-                    "Retry logic",
-                    "Cost tracking with token breakdown"
+                    "Prompt injection mitigation",
+                    "Content moderation checks",
+                    "Hallucination detection",
+                    "Output sanitization"
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feature Group 9: Cost & Performance */}
+              <div className="glass-card p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 rounded-lg bg-orange-500/10 text-orange-400"><CreditCard className="w-5 h-5" /></div>
+                  <h3 className="text-lg font-bold text-white">Cost & Performance</h3>
+                </div>
+                <ul className="grid gap-3">
+                  {[
+                    "Token usage tracking (in/out/cached)",
+                    "Per-step cost attribution",
+                    "Built-in model pricing",
+                    "max_cost threshold enforcement",
+                    "Latency budgets (max_latency)",
+                    "Offline eval with Ollama (free)"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
