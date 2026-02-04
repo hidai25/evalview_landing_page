@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useGitHubReleases } from './hooks/useGitHubReleases';
 import { 
   Github, 
   Copy, 
@@ -41,6 +42,7 @@ import CodeBlock from './components/CodeBlock';
 
 const App: React.FC = () => {
   const [copied, setCopied] = useState(false);
+  const { releases, latestVersion, loading: releasesLoading } = useGitHubReleases();
 
   const handleCopy = () => {
     navigator.clipboard.writeText('pip install evalview');
@@ -123,7 +125,7 @@ const App: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                v0.2.4 Public Beta
+                {releasesLoading ? 'Loading...' : `v${latestVersion || '0.2.4'} Public Beta`}
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
@@ -621,140 +623,140 @@ const App: React.FC = () => {
               {/* Timeline line */}
               <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500/50 via-blue-500/30 to-transparent" />
 
-              {/* Version 0.2.0 */}
-              <div className="relative pl-8 md:pl-20 pb-12">
-                <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-500 border-4 border-black shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
-                <div className="glass-card rounded-2xl p-6 md:p-8">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold">
-                      <Tag className="w-3 h-3" />
-                      v0.2.4
-                    </span>
-                    <span className="text-slate-500 text-sm">February 2026</span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">Latest</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-4">Enhanced Framework Support & Performance</h3>
-
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400 mb-2">
-                        <Rocket className="w-4 h-4" />
-                        New Features
+              {/* Loading state */}
+              {releasesLoading && (
+                <div className="relative pl-8 md:pl-20 pb-12">
+                  <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-600 border-4 border-black animate-pulse" />
+                  <div className="glass-card rounded-2xl p-6 md:p-8">
+                    <div className="animate-pulse space-y-4">
+                      <div className="h-6 bg-slate-700 rounded w-32"></div>
+                      <div className="h-4 bg-slate-700 rounded w-48"></div>
+                      <div className="space-y-2">
+                        <div className="h-3 bg-slate-700 rounded w-full"></div>
+                        <div className="h-3 bg-slate-700 rounded w-3/4"></div>
+                        <div className="h-3 bg-slate-700 rounded w-5/6"></div>
                       </div>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Added support for Dify and AutoGen frameworks</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>New semantic similarity evaluator for fuzzy matching</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Enhanced HTML report with interactive charts</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Watch mode for rapid test iteration</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 text-sm font-semibold text-blue-400 mb-2">
-                        <Wrench className="w-4 h-4" />
-                        Improvements
-                      </div>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>8x faster parallel test execution</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Improved cost tracking accuracy with token breakdown</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Better error messages for configuration issues</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 text-sm font-semibold text-amber-400 mb-2">
-                        <Bug className="w-4 h-4" />
-                        Bug Fixes
-                      </div>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Fixed memory leak in long-running test sessions</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Resolved SQLite locking issues on Windows</span>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Version 0.1.0 */}
-              <div className="relative pl-8 md:pl-20 pb-12">
-                <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500 border-4 border-black" />
-                <div className="glass-card rounded-2xl p-6 md:p-8">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-bold">
-                      <Tag className="w-3 h-3" />
-                      v0.1.0
-                    </span>
-                    <span className="text-slate-500 text-sm">January 2026</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-4">Initial Public Beta</h3>
+              {/* Dynamic releases from GitHub */}
+              {!releasesLoading && releases.map((release, index) => {
+                const isLatest = index === 0;
+                const hasContent = release.features.length > 0 || release.improvements.length > 0 || release.bugFixes.length > 0 || release.other.length > 0;
 
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400 mb-2">
-                        <Rocket className="w-4 h-4" />
-                        Features
+                return (
+                  <div key={release.version} className="relative pl-8 md:pl-20 pb-12">
+                    <div className={`absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full border-4 border-black ${isLatest ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-blue-500'}`} />
+                    <div className="glass-card rounded-2xl p-6 md:p-8">
+                      <div className="flex flex-wrap items-center gap-3 mb-4">
+                        <a
+                          href={release.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold transition-colors ${isLatest ? 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20' : 'bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20'}`}
+                        >
+                          <Tag className="w-3 h-3" />
+                          v{release.version}
+                        </a>
+                        <span className="text-slate-500 text-sm">{release.date}</span>
+                        {isLatest && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">Latest</span>
+                        )}
+                        {release.isPrerelease && (
+                          <span className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">Pre-release</span>
+                        )}
                       </div>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>YAML-based test case definitions</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Support for LangGraph, CrewAI, OpenAI, and Anthropic</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>7 built-in evaluation metrics</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>LLM-as-judge with configurable prompts</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>SQLite-based regression tracking</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>Rich console output and HTML reports</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-slate-500 mt-1">•</span>
-                          <span>SSRF protection and PII detection</span>
-                        </li>
-                      </ul>
+                      <h3 className="text-xl font-bold text-white mb-4">{release.title}</h3>
+
+                      {hasContent ? (
+                        <div className="space-y-4">
+                          {release.features.length > 0 && (
+                            <div>
+                              <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400 mb-2">
+                                <Rocket className="w-4 h-4" />
+                                New Features
+                              </div>
+                              <ul className="space-y-2 text-sm text-slate-300">
+                                {release.features.map((item, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <span className="text-slate-500 mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {release.improvements.length > 0 && (
+                            <div>
+                              <div className="flex items-center gap-2 text-sm font-semibold text-blue-400 mb-2">
+                                <Wrench className="w-4 h-4" />
+                                Improvements
+                              </div>
+                              <ul className="space-y-2 text-sm text-slate-300">
+                                {release.improvements.map((item, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <span className="text-slate-500 mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {release.bugFixes.length > 0 && (
+                            <div>
+                              <div className="flex items-center gap-2 text-sm font-semibold text-amber-400 mb-2">
+                                <Bug className="w-4 h-4" />
+                                Bug Fixes
+                              </div>
+                              <ul className="space-y-2 text-sm text-slate-300">
+                                {release.bugFixes.map((item, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <span className="text-slate-500 mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {release.other.length > 0 && release.features.length === 0 && release.improvements.length === 0 && release.bugFixes.length === 0 && (
+                            <div>
+                              <div className="flex items-center gap-2 text-sm font-semibold text-slate-400 mb-2">
+                                <CheckCircle2 className="w-4 h-4" />
+                                Changes
+                              </div>
+                              <ul className="space-y-2 text-sm text-slate-300">
+                                {release.other.map((item, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <span className="text-slate-500 mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-slate-400">See the <a href={release.url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">release notes on GitHub</a> for details.</p>
+                      )}
                     </div>
                   </div>
+                );
+              })}
+
+              {/* Empty state */}
+              {!releasesLoading && releases.length === 0 && (
+                <div className="relative pl-8 md:pl-20 pb-12">
+                  <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-600 border-4 border-black" />
+                  <div className="glass-card rounded-2xl p-6 md:p-8 text-center">
+                    <p className="text-slate-400">No releases found. Check out our <a href="https://github.com/hidai25/EvalView/releases" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">GitHub releases page</a>.</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* More coming soon indicator */}
               <div className="relative pl-8 md:pl-20">
