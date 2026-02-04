@@ -28,7 +28,12 @@ import {
   Users,
   AlertTriangle,
   TrendingUp,
-  CreditCard
+  CreditCard,
+  Calendar,
+  Tag,
+  Rocket,
+  Bug,
+  Wrench
 } from 'lucide-react';
 import Terminal from './components/Terminal';
 import WaitlistForm from './components/WaitlistForm';
@@ -78,11 +83,17 @@ const App: React.FC = () => {
             >
               Cloud Roadmap
             </button>
-             <button 
-              onClick={() => scrollToSection('pricing')} 
+             <button
+              onClick={() => scrollToSection('pricing')}
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer"
             >
               Pricing
+            </button>
+            <button
+              onClick={() => scrollToSection('changelog')}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer"
+            >
+              Changelog
             </button>
             <a href="https://github.com/hidai25/EvalView" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
               <Github className="w-4 h-4" />
@@ -112,7 +123,7 @@ const App: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                v0.1.0 Public Beta
+                v0.2.0 Public Beta
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
@@ -593,6 +604,169 @@ const App: React.FC = () => {
            </div>
         </section>
 
+        {/* Changelog Section */}
+        <section id="changelog" className="py-24 px-4 scroll-mt-24 relative">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium mb-6">
+                <Calendar className="w-3 h-3" />
+                Release Notes
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Changelog</h2>
+              <p className="text-slate-400">Stay up to date with the latest improvements and features.</p>
+            </div>
+
+            {/* Timeline */}
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500/50 via-blue-500/30 to-transparent" />
+
+              {/* Version 0.2.0 */}
+              <div className="relative pl-8 md:pl-20 pb-12">
+                <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-500 border-4 border-black shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
+                <div className="glass-card rounded-2xl p-6 md:p-8">
+                  <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold">
+                      <Tag className="w-3 h-3" />
+                      v0.2.0
+                    </span>
+                    <span className="text-slate-500 text-sm">February 2026</span>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">Latest</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-4">Enhanced Framework Support & Performance</h3>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400 mb-2">
+                        <Rocket className="w-4 h-4" />
+                        New Features
+                      </div>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Added support for Dify and AutoGen frameworks</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>New semantic similarity evaluator for fuzzy matching</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Enhanced HTML report with interactive charts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Watch mode for rapid test iteration</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 text-sm font-semibold text-blue-400 mb-2">
+                        <Wrench className="w-4 h-4" />
+                        Improvements
+                      </div>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>8x faster parallel test execution</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Improved cost tracking accuracy with token breakdown</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Better error messages for configuration issues</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 text-sm font-semibold text-amber-400 mb-2">
+                        <Bug className="w-4 h-4" />
+                        Bug Fixes
+                      </div>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Fixed memory leak in long-running test sessions</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Resolved SQLite locking issues on Windows</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Version 0.1.0 */}
+              <div className="relative pl-8 md:pl-20 pb-12">
+                <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500 border-4 border-black" />
+                <div className="glass-card rounded-2xl p-6 md:p-8">
+                  <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-bold">
+                      <Tag className="w-3 h-3" />
+                      v0.1.0
+                    </span>
+                    <span className="text-slate-500 text-sm">January 2026</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-4">Initial Public Beta</h3>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400 mb-2">
+                        <Rocket className="w-4 h-4" />
+                        Features
+                      </div>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>YAML-based test case definitions</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Support for LangGraph, CrewAI, OpenAI, and Anthropic</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>7 built-in evaluation metrics</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>LLM-as-judge with configurable prompts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>SQLite-based regression tracking</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>Rich console output and HTML reports</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-slate-500 mt-1">•</span>
+                          <span>SSRF protection and PII detection</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* More coming soon indicator */}
+              <div className="relative pl-8 md:pl-20">
+                <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-700 border-4 border-black" />
+                <div className="text-slate-500 text-sm">
+                  More updates coming soon...
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       {/* Footer */}
@@ -606,6 +780,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-8 text-sm text-slate-500">
             <a href="https://github.com/hidai25/EvalView" className="hover:text-white transition-colors">GitHub</a>
             <a href="#" className="hover:text-white transition-colors">Documentation</a>
+            <button onClick={() => scrollToSection('changelog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Changelog</button>
             <a href="#" className="hover:text-white transition-colors">Twitter</a>
           </div>
 
