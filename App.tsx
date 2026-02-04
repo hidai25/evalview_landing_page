@@ -43,7 +43,8 @@ import {
   Eye,
   Sparkle,
   TestTube2,
-  Cpu
+  Cpu,
+  Star
 } from 'lucide-react';
 import Terminal from './components/Terminal';
 import WaitlistForm from './components/WaitlistForm';
@@ -51,7 +52,7 @@ import CodeBlock from './components/CodeBlock';
 
 const App: React.FC = () => {
   const [copied, setCopied] = useState(false);
-  const { releases, latestVersion, loading: releasesLoading } = useGitHubReleases();
+  const { releases, latestVersion, starCount, loading: releasesLoading } = useGitHubReleases();
 
   const handleCopy = () => {
     navigator.clipboard.writeText('pip install evalview');
@@ -109,6 +110,12 @@ const App: React.FC = () => {
             <a href="https://github.com/hidai25/EvalView" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
               <Github className="w-4 h-4" />
               <span className="hidden sm:inline">GitHub</span>
+              {starCount > 0 && (
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
+                  <Star className="w-3 h-3 fill-amber-400" />
+                  {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
+                </span>
+              )}
             </a>
             <button 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -166,14 +173,19 @@ const App: React.FC = () => {
                     {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" />}
                   </button>
                   
-                  <a 
+                  <a
                     href="https://github.com/hidai25/EvalView"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 bg-white text-black hover:bg-slate-200 px-6 py-3 rounded-lg font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)]"
                   >
-                    <Github className="w-5 h-5" />
+                    <Star className="w-5 h-5" />
                     Star on GitHub
+                    {starCount > 0 && (
+                      <span className="ml-1 px-2 py-0.5 rounded-full bg-black/10 text-xs font-bold">
+                        {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
+                      </span>
+                    )}
                   </a>
                 </div>
 
@@ -913,13 +925,13 @@ const App: React.FC = () => {
           
           <div className="flex items-center gap-8 text-sm text-slate-500">
             <a href="https://github.com/hidai25/EvalView" className="hover:text-white transition-colors">GitHub</a>
-            <a href="#" className="hover:text-white transition-colors">Documentation</a>
+            <a href="https://github.com/hidai25/EvalView#readme" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a>
             <button onClick={() => scrollToSection('changelog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Changelog</button>
             <a href="#" className="hover:text-white transition-colors">Twitter</a>
           </div>
 
           <div className="text-sm text-slate-600">
-            <p>© 2025 EvalView. Apache 2.0 License.</p>
+            <p>© 2026 EvalView. Apache 2.0 License.</p>
           </div>
         </div>
       </footer>
