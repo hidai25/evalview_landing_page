@@ -304,6 +304,45 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
     );
   }
 
+  if (!post.published) {
+    return (
+      <div className="min-h-screen font-sans selection:bg-cyan-500/30 text-slate-300">
+        <div className="fixed inset-0 bg-grid opacity-20 pointer-events-none z-0" />
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
+        <BlogNavbar />
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
+          <div className="text-5xl mb-6">✍️</div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
+            Coming soon
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4 max-w-xl leading-snug">
+            {post.title}
+          </h1>
+          <p className="text-slate-400 max-w-lg leading-relaxed mb-8">
+            {post.excerpt}
+          </p>
+          <div className="flex items-center gap-3 mb-10 text-sm text-slate-500">
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" /> {post.readTime} min read
+            </span>
+            <span>·</span>
+            <span>{post.category}</span>
+          </div>
+          <button
+            onClick={() => navigate('/blog')}
+            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Blog
+          </button>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen font-sans selection:bg-cyan-500/30 selection:text-cyan-50 text-slate-300">
       {/* Background */}

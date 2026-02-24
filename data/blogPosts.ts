@@ -19,6 +19,7 @@ export interface BlogPostData {
   category: string;
   tags: string[];
   featured: boolean;
+  published: boolean;
   content: InlineBlock[];
 }
 
@@ -35,6 +36,7 @@ export const blogPosts: BlogPostData[] = [
     category: 'Engineering',
     tags: ['Production', 'Testing', 'AI Reliability'],
     featured: true,
+    published: false,
     content: [
       {
         type: 'callout',
@@ -269,6 +271,7 @@ tests:
     category: 'Observability',
     tags: ['Metrics', 'Observability', 'Production'],
     featured: false,
+    published: false,
     content: [
       {
         type: 'callout',
@@ -473,6 +476,7 @@ evaluators:
     category: 'Tutorial',
     tags: ['Getting Started', 'Tutorial', 'Developer Experience'],
     featured: false,
+    published: false,
     content: [
       {
         type: 'paragraph',
@@ -678,8 +682,11 @@ jobs:
 export const getBlogPost = (slug: string): BlogPostData | undefined =>
   blogPosts.find((p) => p.slug === slug);
 
+export const getPublishedPosts = (): BlogPostData[] =>
+  blogPosts.filter((p) => p.published);
+
 export const getFeaturedPost = (): BlogPostData | undefined =>
-  blogPosts.find((p) => p.featured);
+  blogPosts.find((p) => p.featured && p.published);
 
 export const getNonFeaturedPosts = (): BlogPostData[] =>
-  blogPosts.filter((p) => !p.featured);
+  blogPosts.filter((p) => !p.featured && p.published);
