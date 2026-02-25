@@ -1,0 +1,692 @@
+export type InlineBlock =
+  | { type: 'heading'; level: 2 | 3; text: string }
+  | { type: 'paragraph'; text: string }
+  | { type: 'code'; language: string; filename?: string; content: string }
+  | { type: 'quote'; text: string; attribution?: string }
+  | { type: 'list'; items: string[]; ordered?: boolean }
+  | { type: 'callout'; variant: 'info' | 'warning' | 'tip'; title: string; text: string }
+  | { type: 'divider' }
+  | { type: 'metric_group'; metrics: Array<{ value: string; label: string; description: string }> };
+
+export interface BlogPostData {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readTime: number;
+  author: string;
+  authorRole: string;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  published: boolean;
+  content: InlineBlock[];
+}
+
+export const blogPosts: BlogPostData[] = [
+  {
+    slug: 'why-your-ai-agent-has-a-hidden-bug-in-production',
+    title: 'Why Your AI Agent Has a Hidden Bug in Production Right Now',
+    excerpt:
+      'Your CI is green. Your staging environment looks great. Your users are about to find something you missed. Here\'s why AI agents fail silently—and what a real test suite looks like.',
+    date: 'February 20, 2026',
+    readTime: 9,
+    author: 'EvalView Team',
+    authorRole: 'Product & Engineering',
+    category: 'Engineering',
+    tags: ['Production', 'Testing', 'AI Reliability'],
+    featured: true,
+    published: false,
+    content: [
+      {
+        type: 'callout',
+        variant: 'tip',
+        title: 'TL;DR',
+        text: 'AI agents fail silently in four ways that traditional monitoring never catches: hallucination drift, tool selection regression, cost explosion, and context window failures. This post explains each failure mode and what a proper test suite looks like.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "The Green CI Build Doesn't Mean What You Think",
+      },
+      {
+        type: 'paragraph',
+        text: "There's a sentence engineering teams say with confidence that they probably shouldn't: **\"My agent passes all our tests.\"** In traditional software, a passing test suite is meaningful signal. In AI, it might mean your 30 test cases happened to avoid the 8% of prompts where your model quietly returns the wrong tool call.",
+      },
+      {
+        type: 'paragraph',
+        text: 'The difference is fundamental. Traditional tests are deterministic — a function that works today works the same way tomorrow, given identical inputs. An LLM is a statistical system. Pass rate isn\'t binary. It\'s a distribution.',
+      },
+      {
+        type: 'paragraph',
+        text: "We've observed this pattern across teams deploying production AI agents: the most common incident isn't a server crash or a 500 error. It's a **gradual decline in answer quality** that users notice weeks before any alert fires.",
+      },
+      {
+        type: 'metric_group',
+        metrics: [
+          { value: '78%', label: 'No Regression Tests', description: 'of teams running production AI agents have never written a regression test for their agent behavior' },
+          { value: '3.2×', label: 'Slower Detection', description: 'longer it takes to detect AI quality degradation vs. infrastructure failures when relying on user reports' },
+          { value: '8%', label: 'Average Drift', description: 'typical pass-rate drop teams see after a model provider\'s silent patch update — invisible without baselines' },
+        ],
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'The Four Silent Failure Modes',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '1. Hallucination Drift',
+      },
+      {
+        type: 'paragraph',
+        text: "LLM providers ship model updates on rolling schedules. A model that scored 96% on your evaluation suite in Q3 might score 89% after a quiet update in Q4. Nothing in your infrastructure logs will flag this. The symptoms show up in user feedback threads or, worse, in a screenshot on social media.",
+      },
+      {
+        type: 'paragraph',
+        text: 'The compounding problem: most teams re-evaluate only after major version bumps, not patch releases. But patch releases are exactly where hallucination rates shift on narrow domains — the specialized queries that define your agent\'s core value.',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '2. Tool Selection Regression',
+      },
+      {
+        type: 'paragraph',
+        text: "You've spent three weeks prompt-engineering the perfect system instruction. You push a one-line tweak to improve clarity on date formatting. In testing, everything looks fine. In production, a cohort of queries that previously routed correctly now selects the wrong tool — subtly, inconsistently, with no exceptions raised.",
+      },
+      {
+        type: 'paragraph',
+        text: 'Tool selection regressions are particularly nasty because they\'re **logically silent**. The agent runs to completion. The response looks plausible. The user just got the wrong thing.',
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: 'tool_regression_test.yaml',
+        content: `test_suite: financial_agent
+tests:
+  - name: "equity_research_query"
+    input: "What's Apple's revenue trend over the last 4 quarters?"
+    expected_tools:
+      - search_financials
+      - compute_trend
+    # This test catches tool selection regressions after prompt changes
+    thresholds:
+      min_tool_match: 1.0   # Both tools must be called
+      max_cost_usd: 0.015
+    evaluators:
+      - type: sequence_match
+        mode: subsequence    # order matters here`,
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '3. Cost Explosion',
+      },
+      {
+        type: 'paragraph',
+        text: "An edge case surfaces in production — an input format your agent wasn't designed for. The agent doesn't crash. It retries. And retries. And retries. Token usage spikes 10x for that session. You don't find out until you review the monthly spend.",
+      },
+      {
+        type: 'callout',
+        variant: 'warning',
+        title: 'The Cost Silence Problem',
+        text: "Cost anomalies behave differently from latency or error anomalies. A 10x latency spike fails the request and surfaces in logs immediately. A 10x token spike succeeds, returns HTTP 200, and shows up on your invoice 30 days later.",
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '4. Context Window Failures at Scale',
+      },
+      {
+        type: 'paragraph',
+        text: "Your agent is battle-tested on your sample dataset — clean 300-word inputs, well-structured queries. Your first enterprise customer has 15,000-word documents and nested cross-references. The agent doesn't crash. It silently truncates context, hallucinates continuity, and returns confident-sounding answers about sections it never fully read.",
+      },
+      {
+        type: 'paragraph',
+        text: 'This class of failure **scales inversely with customer sophistication** — it gets worse as your users get more demanding. The teams who catch it earliest are those who test at boundary conditions, not just happy paths.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "Why Your Monitoring Stack Won't Catch This",
+      },
+      {
+        type: 'paragraph',
+        text: 'APM tools are designed around a core assumption: **incorrect behavior manifests as an infrastructure event**. Error rates, latency percentiles, CPU spikes. These are valuable signals. They\'re just not the signals that matter for AI agent correctness.',
+      },
+      {
+        type: 'paragraph',
+        text: 'An AI agent can return `HTTP 200` with a hallucinated answer that ruins a business decision. Your monitoring dashboard will look completely healthy.',
+      },
+      {
+        type: 'quote',
+        text: "Users don't report wrong answers — they report their experience. By the time support tickets reference quality issues, the degradation has been happening for weeks.",
+      },
+      {
+        type: 'paragraph',
+        text: 'The monitoring gap is **logical correctness** — a layer of evaluation that infrastructure tools aren\'t designed to provide and that only purpose-built testing frameworks can fill.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'What Coverage Looks Like for AI Agents',
+      },
+      {
+        type: 'paragraph',
+        text: 'The framework mirrors what we already know from software testing. The vocabulary transfers directly:',
+      },
+      {
+        type: 'list',
+        items: [
+          '**Unit tests**: Does a single tool call return the correct format with valid arguments? Test each tool in isolation before testing composition.',
+          '**Integration tests**: Given a 5-step task flow, does the agent produce the expected sequence of actions and a correct final output?',
+          '**Regression tests**: Do yesterday\'s golden baselines still pass after the model update? After the prompt change? After the dependency upgrade?',
+          '**Property tests**: Across 100 variations of the same input, does quality stay above your minimum threshold? (`pass@k` scores capture this)',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: "The key shift from traditional testing: **evaluation isn't binary**. An AI agent response can be *mostly correct*, *partially correct*, or *wrong in a specific way*. A mature test suite captures this with weighted scoring and LLM-as-judge evaluation — not just pass/fail.",
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: 'comprehensive_suite.yaml',
+        content: `test_suite: stock_analysis_agent
+
+tests:
+  - name: "financial_query_basic"
+    input: "What are Apple's key financial metrics for Q3 2025?"
+    expected_tools: [search_financials, format_report]
+    thresholds:
+      min_score: 0.85
+      max_cost_usd: 0.02
+      max_latency_ms: 3000
+    evaluators:
+      - type: llm_judge
+        criteria: "Response includes revenue, EPS, and gross margins"
+      - type: sequence_match
+        mode: subsequence
+
+  - name: "edge_case_no_data"
+    input: "What are the financials for a company that doesn't exist?"
+    expected_behavior: graceful_fallback
+    thresholds:
+      min_score: 0.90   # Should confidently decline
+    evaluators:
+      - type: llm_judge
+        criteria: "Response acknowledges inability to find data without hallucinating"`,
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'The Five Tests Every Agent Team Needs First',
+      },
+      {
+        type: 'list',
+        ordered: true,
+        items: [
+          '**The Happy Path** — Your most common user flow, end-to-end. If this breaks, everything breaks. Run it on every deployment.',
+          '**The Edge Case** — The input most unlike your training distribution. What happens at the boundary? Document current behavior and set it as your baseline.',
+          '**The Empty State** — No relevant context, no matching knowledge. Does the agent fail gracefully or confidently hallucinate an answer?',
+          '**The Cost Test** — A query you expect to be expensive. Does actual token usage match your model? Set a hard budget ceiling.',
+          '**The Regression Baseline** — Your current behavior, frozen. Run it after every model update, every prompt change, every dependency upgrade.',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: "These five tests won't give you comprehensive coverage. But they'll catch 80% of production incidents before users do — and that's a meaningfully better position than where most teams start.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Reliability Is a Testing Problem',
+      },
+      {
+        type: 'paragraph',
+        text: "Engineering teams treat AI agent reliability as a model problem — something the LLM provider will improve. Product managers treat it as a UX problem — something the design team can soften. Neither framing is correct.",
+      },
+      {
+        type: 'paragraph',
+        text: '**Reliability is a testing problem.** The teams shipping the most reliable AI agents aren\'t those with access to better models. They\'re those with more disciplined test suites, faster regression cycles, and observability infrastructure that surfaces quality issues before users do.',
+      },
+      {
+        type: 'paragraph',
+        text: "That's a solvable engineering problem. It just requires treating AI agents with the same rigor we've always applied to the rest of our software stack.",
+      },
+    ],
+  },
+
+  {
+    slug: 'ai-agent-metrics-playbook',
+    title: 'The AI Agent Metrics Playbook: What to Track and Why',
+    excerpt:
+      'A 99.9% uptime SLA tells you nothing about whether your agent is actually helpful. Here are the 10 metrics that actually matter for production AI agents — with thresholds, benchmarks, and how to instrument them.',
+    date: 'February 12, 2026',
+    readTime: 7,
+    author: 'EvalView Team',
+    authorRole: 'Product & Engineering',
+    category: 'Observability',
+    tags: ['Metrics', 'Observability', 'Production'],
+    featured: false,
+    published: false,
+    content: [
+      {
+        type: 'callout',
+        variant: 'tip',
+        title: 'TL;DR',
+        text: 'Most AI agent dashboards copy-paste traditional microservices monitoring. That misses the metrics that actually predict quality degradation. This post covers 10 metrics organized into three stacks: Reliability, Quality, and Efficiency.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Why Infrastructure Metrics Lie About AI Quality',
+      },
+      {
+        type: 'paragraph',
+        text: "Here's a scenario: Your agent has 99.9% uptime. P95 latency is 800ms. Error rate is 0.1%. Your on-call engineer is happy. Your users are silently churning.",
+      },
+      {
+        type: 'paragraph',
+        text: 'Traditional microservice metrics measure infrastructure health. AI agent metrics need to measure **correctness, quality, and efficiency** — three dimensions that infrastructure tooling doesn\'t touch. An agent can return `HTTP 200` with a response that\'s factually wrong, costs $0.40 when it should cost $0.02, and selects a deprecated tool that returns stale data.',
+      },
+      {
+        type: 'paragraph',
+        text: 'The teams that catch quality regressions fastest have two things in common: they track metrics specific to AI behavior, and they set alerting thresholds before things go wrong.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Stack 1: Reliability',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '1. Task Completion Rate (TCR)',
+      },
+      {
+        type: 'paragraph',
+        text: "The percentage of conversations where the agent **successfully completes the user's requested task**. This is your north-star metric. Everything else is a leading indicator of this.",
+      },
+      {
+        type: 'list',
+        items: [
+          '**Target**: >85% for most consumer-facing use cases',
+          '**Red flag**: Below 70% is a product emergency, not an engineering incident',
+          '**Gotcha**: Define \"completion\" explicitly — vague definitions produce misleading TCR scores',
+        ],
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '2. pass@k Score',
+      },
+      {
+        type: 'paragraph',
+        text: 'Run the same prompt `k` times. What percentage of those runs produce a correct result? If `pass@5` is 95% but `pass@1` is 40%, your agent is non-deterministically unreliable — and real users only get one attempt.',
+      },
+      {
+        type: 'paragraph',
+        text: '`pass@k` is the most honest reliability metric for non-deterministic systems. A 40% `pass@1` means **6 out of 10 users get a wrong answer**. That\'s not a bug you can fix with retry logic.',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '3. Tool Selection Accuracy',
+      },
+      {
+        type: 'paragraph',
+        text: "Given a task that requires specific tools, does the agent consistently select the right ones? Track this per-tool, not just in aggregate. A degradation in one tool's selection rate often predicts a broader regression — especially after prompt changes.",
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: 'tool_accuracy_test.yaml',
+        content: `# Track tool selection accuracy per tool type
+evaluators:
+  - type: tool_match
+    expected: [search_web, summarize_content]
+    mode: exact           # or 'subsequence' for flexible ordering
+    min_accuracy: 0.95    # alert if this drops below 95%`,
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Stack 2: Quality',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '4. Hallucination Rate',
+      },
+      {
+        type: 'paragraph',
+        text: 'The percentage of responses that contain factually incorrect claims not supported by the provided context. This requires an **LLM-as-judge evaluation layer** — a separate model that reviews responses against a ground truth or source document.',
+      },
+      {
+        type: 'metric_group',
+        metrics: [
+          { value: '<5%', label: 'Consumer Agents', description: 'Target hallucination rate for consumer-facing AI agents with factual queries' },
+          { value: '<1%', label: 'High-Stakes Domains', description: 'Required hallucination ceiling for financial, medical, or legal AI applications' },
+          { value: '3-8%', label: 'Industry Average', description: 'Typical hallucination rate observed without systematic testing and evaluation' },
+        ],
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '5. Sequence Matching Score',
+      },
+      {
+        type: 'paragraph',
+        text: 'For multi-step tasks, did the agent take the correct steps in the correct order? Raw task completion rate misses ordering errors — an agent can produce the right final answer after taking the wrong path, masking underlying reliability issues.',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '6. Output Schema Compliance',
+      },
+      {
+        type: 'paragraph',
+        text: 'If your agent returns structured data, what percentage of responses conform to the expected schema? Non-compliance in schema outputs is an early warning signal — it often precedes harder failures as input complexity increases.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Stack 3: Efficiency',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '7. Cost Per Conversation (CPC)',
+      },
+      {
+        type: 'paragraph',
+        text: "Average token spend per completed user interaction. Track **P50 and P95 separately** — they tell different stories. Rising P95 usually indicates edge cases triggering expensive retry loops or unexpected tool chains. Rising P50 means a systemic prompt change bloated your base token count.",
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '8. Latency Budget Adherence',
+      },
+      {
+        type: 'paragraph',
+        text: 'What percentage of requests complete within your latency SLA? Track this by task type — document summarization has different latency expectations than quick factual lookups. A single latency SLA obscures the cases where performance degradation is actually user-visible.',
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '9. Token Attribution by Step',
+      },
+      {
+        type: 'paragraph',
+        text: "Where is your token spend actually going? One verbose system prompt or a single tool call with a large output often accounts for 60-70% of per-conversation costs. **You can't optimize what you can't see at the step level.**",
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: '10. PII Exposure Rate',
+      },
+      {
+        type: 'paragraph',
+        text: "Are any agent responses leaking personally identifiable information from the context window, tool outputs, or retrieved documents? This metric should **always be 0%**. If it's not, you have a compliance incident, not a performance issue.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Building the Dashboard: Where to Start',
+      },
+      {
+        type: 'paragraph',
+        text: "The goal isn't to track all 10 metrics simultaneously from day one. Instrument sequentially based on your current risk profile:",
+      },
+      {
+        type: 'list',
+        ordered: true,
+        items: [
+          '**Start with**: Task Completion Rate, pass@1, and Cost Per Conversation. These three surface 80% of production issues.',
+          '**Add next**: Hallucination Rate and Tool Selection Accuracy once you have LLM-as-judge evaluation running.',
+          '**Mature into**: Token Attribution by Step, Sequence Matching, and Schema Compliance as your agent scales to real traffic.',
+          '**Non-negotiable from day one**: PII Exposure Rate. Zero tolerance, zero exceptions.',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'The teams with the best incident track records aren\'t those monitoring all 10 metrics perfectly. They\'re those who set **explicit alerting thresholds** on a small number of metrics and act on them consistently.',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        title: 'Instrument Everything in One Place',
+        text: 'EvalView automatically captures all 10 of these metrics during test runs — cost attribution, token counts per step, tool selection accuracy, and LLM-as-judge scoring. Define your thresholds in YAML. Get alerts when you breach them.',
+      },
+    ],
+  },
+
+  {
+    slug: 'getting-started-ai-agent-testing-15-minutes',
+    title: 'Getting Started with AI Agent Testing in 15 Minutes',
+    excerpt:
+      'From zero to a working test suite for your AI agent. A practical walkthrough of EvalView\'s core concepts with real YAML examples you can copy-paste into your project today.',
+    date: 'January 28, 2026',
+    readTime: 6,
+    author: 'EvalView Team',
+    authorRole: 'Product & Engineering',
+    category: 'Tutorial',
+    tags: ['Getting Started', 'Tutorial', 'Developer Experience'],
+    featured: false,
+    published: false,
+    content: [
+      {
+        type: 'paragraph',
+        text: "Testing AI agents sounds complex. In practice, it follows the same pattern as every other testing framework you've used: install, configure, run. The difference is what you're evaluating — correctness on a probabilistic system instead of a deterministic one.",
+      },
+      {
+        type: 'paragraph',
+        text: "This guide walks through EvalView's core concepts with real examples. By the end, you'll have a working test suite that catches the failures described in our first post.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 1: Install',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `pip install evalview
+
+# Verify the installation
+evalview --version`,
+      },
+      {
+        type: 'paragraph',
+        text: 'EvalView works with **LangGraph, CrewAI, OpenAI Agents, Anthropic, AutoGen, Dify, LangServe, Ollama, and Claude Code** out of the box. Zero configuration for framework auto-detection.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 2: Write Your First Test',
+      },
+      {
+        type: 'paragraph',
+        text: 'Tests are YAML files. Each test defines an input, the tools you expect the agent to call, and the quality thresholds that define a passing result.',
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: 'tests/first_test.yaml',
+        content: `test_suite: my_first_agent_tests
+
+tests:
+  - name: "basic_query"
+    description: "Agent should answer a simple factual question"
+    input: "What is the capital of France?"
+    thresholds:
+      min_score: 0.9
+      max_latency_ms: 2000
+    evaluators:
+      - type: llm_judge
+        criteria: "Response correctly identifies Paris as the capital of France"`,
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 3: Run the Tests',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `# Run all tests in the tests/ directory
+evalview run tests/
+
+# Run a specific file
+evalview run tests/first_test.yaml
+
+# Run with verbose output to see token usage and latency
+evalview run tests/ --verbose`,
+      },
+      {
+        type: 'paragraph',
+        text: "EvalView will automatically connect to your running agent, execute each test case, run your evaluators, and report results against your thresholds. First run takes a few seconds — subsequent runs use cached connections.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 4: Add Tool-Use Tests',
+      },
+      {
+        type: 'paragraph',
+        text: 'The most common source of regressions is tool selection. Add tests that specify which tools your agent should call:',
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: 'tests/tool_tests.yaml',
+        content: `test_suite: tool_selection_tests
+
+tests:
+  - name: "weather_query_uses_weather_tool"
+    input: "What's the weather in Tokyo right now?"
+    expected_tools:
+      - get_weather
+    thresholds:
+      min_tool_match: 1.0    # All expected tools must be called
+      min_score: 0.85
+      max_cost_usd: 0.01
+    evaluators:
+      - type: tool_match
+        mode: subsequence
+      - type: llm_judge
+        criteria: "Response includes current temperature and conditions"
+
+  - name: "math_query_no_web_search"
+    input: "What is 15% of 340?"
+    expected_tools:
+      - calculator
+    expected_not_tools:
+      - web_search    # Shouldn't be searching the web for basic math
+    thresholds:
+      min_score: 0.95`,
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 5: Add Regression Baselines',
+      },
+      {
+        type: 'paragraph',
+        text: 'Once you\'re happy with your agent\'s behavior, freeze it as a baseline. EvalView will compare future runs against these golden outputs and alert you when behavior drifts.',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `# Save current outputs as golden baselines
+evalview baseline save tests/
+
+# On future runs, compare against baselines automatically
+evalview run tests/ --compare-baseline
+
+# Output shows what changed:
+# ✓ basic_query: PASS (score: 0.94, baseline: 0.91, Δ+0.03)
+# ✗ weather_query: REGRESSION (score: 0.71, baseline: 0.89, Δ-0.18)`,
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Step 6: Add to CI/CD',
+      },
+      {
+        type: 'paragraph',
+        text: "The final step: make your tests part of your deployment pipeline. EvalView ships with a ready-made GitHub Actions configuration:",
+      },
+      {
+        type: 'code',
+        language: 'yaml',
+        filename: '.github/workflows/agent-tests.yml',
+        content: `name: Agent Tests
+
+on: [push, pull_request]
+
+jobs:
+  test-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install evalview
+      - run: evalview run tests/ --compare-baseline
+        env:
+          OPENAI_API_KEY: \${{ secrets.OPENAI_API_KEY }}`,
+      },
+      {
+        type: 'paragraph',
+        text: 'Now every pull request runs your agent test suite automatically. Regressions block merges. Your main branch stays clean.',
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'What to Build Next',
+      },
+      {
+        type: 'paragraph',
+        text: "You have a working test suite. Here's the order we recommend expanding it:",
+      },
+      {
+        type: 'list',
+        ordered: true,
+        items: [
+          '**Add edge cases** — Test the inputs that are furthest from your happy path. These are where agents fail most spectacularly.',
+          '**Add cost tests** — Set `max_cost_usd` thresholds on expensive flows. Cost explosions in production often start as edge cases.',
+          '**Add pass@k tests** — Run your most critical flows 5-10 times. Low `pass@k` scores flag non-determinism issues before they reach users.',
+          '**Add LLM-as-judge for quality** — Use EvalView\'s built-in `llm_judge` evaluator to assess response quality with custom criteria specific to your domain.',
+          '**Connect EvalView Cloud (Q1 2026)** — Get real-time production monitoring, Slack alerts on threshold breaches, and 1-click replay of failed production traces.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'tip',
+        title: 'Demo Mode Available',
+        text: "Don't have an agent running yet? Use `evalview demo` to run EvalView against a built-in sample agent. No API key required. It's the fastest way to see what a complete test run looks like.",
+      },
+      {
+        type: 'paragraph',
+        text: "Testing AI agents isn't harder than testing traditional software — it's different. The reward is the same: catching bugs before users do, shipping with confidence, and sleeping better at night.",
+      },
+    ],
+  },
+];
+
+export const getBlogPost = (slug: string): BlogPostData | undefined =>
+  blogPosts.find((p) => p.slug === slug);
+
+export const getPublishedPosts = (): BlogPostData[] =>
+  blogPosts.filter((p) => p.published);
+
+export const getFeaturedPost = (): BlogPostData | undefined =>
+  blogPosts.find((p) => p.featured && p.published);
+
+export const getNonFeaturedPosts = (): BlogPostData[] =>
+  blogPosts.filter((p) => !p.featured && p.published);

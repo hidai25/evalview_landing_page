@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGitHubReleases } from './hooks/useGitHubReleases';
+import { useNavigation } from './hooks/router';
 import { 
   Github, 
   Copy, 
@@ -53,6 +54,7 @@ import CodeBlock from './components/CodeBlock';
 const App: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const { releases, latestVersion, starCount, loading: releasesLoading } = useGitHubReleases();
+  const { navigate } = useNavigation();
 
   const handleCopy = () => {
     navigator.clipboard.writeText('pip install evalview');
@@ -106,6 +108,12 @@ const App: React.FC = () => {
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer"
             >
               Changelog
+            </button>
+            <button
+              onClick={() => navigate('/blog')}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer"
+            >
+              Blog
             </button>
             <a href="https://github.com/hidai25/EvalView" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
               <Github className="w-4 h-4" />
