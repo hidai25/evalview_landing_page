@@ -1,0 +1,6 @@
+# robots.txt for evalview.com
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.evalview.com/sitemap.xml

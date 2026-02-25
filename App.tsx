@@ -248,7 +248,7 @@ const App: React.FC = () => {
         <section className="py-24 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Why EvalView?</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Why EvalView vs Tracing-Only Tools?</h2>
               <p className="text-slate-400 max-w-2xl mx-auto text-lg">
                 Production-ready, open-source testing with comprehensive evaluation.
               </p>
@@ -325,7 +325,7 @@ const App: React.FC = () => {
         <section id="features" className="py-24 scroll-mt-24 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Complete Testing Suite</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Complete AI Agent Testing Suite</h2>
               <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
             </div>
 
@@ -556,7 +556,7 @@ const App: React.FC = () => {
                  Developer Experience
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Tests that act as documentation
+                YAML Test Cases That Act as Documentation
               </h2>
               <p className="text-slate-400 mb-8 text-lg leading-relaxed">
                 Define your test cases in simple YAML. No complex boilerplate. Just inputs, expected outputs, and success criteria that anyone on the team can read.
@@ -593,7 +593,7 @@ const App: React.FC = () => {
                  <Sparkles className="w-3 h-3" />
                  Coming Q1 2026
                </div>
-               <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Stop Debugging in the Dark</h2>
+               <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">AI Agent Monitoring & CI Integration</h2>
                <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
                  Your agents are failing in production. You find out from users. <br className="hidden md:block"/>
                  With <span className="text-white font-medium">EvalView Cloud</span>, you see failures in real-time and fix them before users notice.
@@ -692,66 +692,39 @@ const App: React.FC = () => {
                <p className="text-slate-400">Open source forever. Cloud for teams.</p>
              </div>
 
-             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+             <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                 {/* OSS */}
                 <div className="glass-card p-6 rounded-2xl border-t-4 border-t-emerald-500 flex flex-col">
-                   <h3 className="text-xl font-bold text-white mb-2">OSS</h3>
+                   <h3 className="text-xl font-bold text-white mb-2">Open Source</h3>
                    <p className="text-3xl font-bold text-emerald-400 mb-4">$0 <span className="text-sm font-normal text-slate-500">/ forever</span></p>
-                   <p className="text-sm text-slate-400 mb-6 flex-grow">For individual developers.</p>
+                   <p className="text-sm text-slate-400 mb-6 flex-grow">Everything you need to test AI agents locally.</p>
                    <ul className="space-y-3 mb-8 text-sm text-slate-300">
                       <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> All CLI features</li>
                       <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> Unlimited local tests</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> SQLite tracking</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> 7+ framework adapters</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> SQLite regression tracking</li>
                       <li className="flex gap-2"><Check className="w-4 h-4 text-emerald-500"/> Community support</li>
                    </ul>
-                   <button onClick={handleCopy} className="w-full py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-colors">
+                   <button onClick={handleCopy} className="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors">
                       Install Now
                    </button>
                 </div>
 
-                {/* Cloud Free */}
-                <div className="glass-card p-6 rounded-2xl border-t-4 border-t-slate-500 flex flex-col opacity-75">
-                   <h3 className="text-xl font-bold text-white mb-2">Cloud Free</h3>
-                   <p className="text-3xl font-bold text-white mb-4">$0 <span className="text-sm font-normal text-slate-500">/ mo</span></p>
-                   <p className="text-sm text-slate-400 mb-6 flex-grow">Coming Q1 2026.</p>
-                   <ul className="space-y-3 mb-8 text-sm text-slate-300">
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-slate-500"/> 1K traces/month</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-slate-500"/> Basic dashboard</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-slate-500"/> 7-day retention</li>
-                   </ul>
-                   <button disabled className="w-full py-2 rounded-lg bg-transparent border border-white/5 text-slate-500 text-sm font-medium cursor-not-allowed">
-                      Waitlist Only
-                   </button>
-                </div>
-
-                {/* Cloud Pro */}
+                {/* Cloud */}
                 <div className="glass-card p-6 rounded-2xl border-t-4 border-t-cyan-500 relative flex flex-col">
-                   <div className="absolute top-0 right-0 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">POPULAR</div>
-                   <h3 className="text-xl font-bold text-white mb-2">Cloud Pro</h3>
-                   <p className="text-3xl font-bold text-white mb-4">$49 <span className="text-sm font-normal text-slate-500">/ mo</span></p>
-                   <p className="text-sm text-slate-400 mb-6 flex-grow">For small teams.</p>
+                   <div className="absolute top-0 right-0 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">COMING Q1 2026</div>
+                   <h3 className="text-xl font-bold text-white mb-2">EvalView Cloud</h3>
+                   <p className="text-3xl font-bold text-white mb-4">Coming Soon</p>
+                   <p className="text-sm text-slate-400 mb-6 flex-grow">Team collaboration & production monitoring.</p>
                    <ul className="space-y-3 mb-8 text-sm text-slate-300">
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> 10K traces/month</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> 5 users</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Alerting integrations</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Real-time dashboards</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Team collaboration</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Slack/Email alerts</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Production monitoring</li>
+                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Early access pricing for waitlist</li>
                    </ul>
                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium transition-colors">
-                      Join Waitlist
-                   </button>
-                </div>
-
-                {/* Cloud Team */}
-                <div className="glass-card p-6 rounded-2xl border-t-4 border-t-blue-500 flex flex-col">
-                   <h3 className="text-xl font-bold text-white mb-2">Cloud Team</h3>
-                   <p className="text-3xl font-bold text-white mb-4">$199 <span className="text-sm font-normal text-slate-500">/ mo</span></p>
-                   <p className="text-sm text-slate-400 mb-6 flex-grow">For scaling organizations.</p>
-                   <ul className="space-y-3 mb-8 text-sm text-slate-300">
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-blue-500"/> 100K traces/month</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-blue-500"/> Unlimited users</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-blue-500"/> SSO & RBAC</li>
-                   </ul>
-                   <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-full py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-colors">
-                      Join Waitlist
+                      Join Waitlist for Early Pricing
                    </button>
                 </div>
              </div>
