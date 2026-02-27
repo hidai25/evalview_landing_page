@@ -202,6 +202,21 @@
         background: #334155;
       }
     </style>
+  <!-- SPA redirect handler for GitHub Pages (reads ?p= set by 404.html) -->
+  <script>
+    (function() {
+      var redirect = window.location.search.slice(1);
+      if (redirect.startsWith('p=/')) {
+        var path = redirect.slice(2).split('&q=').map(function(s) {
+          return decodeURIComponent(s.replace(/~and~/g, '&'));
+        });
+        var newUrl = window.location.protocol + '//' + window.location.host +
+          path[0] + (path[1] ? '?' + path[1] : '') + window.location.hash;
+        window.history.replaceState(null, null, newUrl);
+      }
+    })();
+  </script>
+
 
 <link rel="stylesheet" href="/index.css">
   <script type="importmap">
@@ -214,7 +229,7 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-hKeLlv9Y.js"></script>
+  <script type="module" crossorigin src="/assets/index-V1Q4ojCJ.js"></script>
 </head>
   <body>
     <div id="root"></div>
