@@ -24,8 +24,10 @@ export interface ParsedRelease {
 }
 
 const GITHUB_REPO = 'hidai25/EvalView';
+const PYPI_PACKAGE = 'evalview';
 const CACHE_KEY = 'evalview_github_releases';
 const CACHE_KEY_REPO = 'evalview_github_repo';
+const CACHE_KEY_PYPI = 'evalview_pypi_version';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 function parseReleaseBody(body: string): { features: string[]; improvements: string[]; bugFixes: string[]; other: string[] } {
@@ -176,6 +178,31 @@ export function useGitHubReleases() {
               timestamp: Date.now(),
             }));
             setStarCount(stars);
+          }
+        }
+
+        // Fetch latest version from PyPI (source of truth for pip installs)
+        const cachedPypi = localStorage.getItem(CACHE_KEY_PYPI);
+        let useCachedPypi = false;
+        if (cachedPypi) {
+          const { data, timestamp } = JSON.parse(cachedPypi);
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            setLatestVersion(data.version);
+            useCachedPypi = true;
+          }
+        }
+        if (!useCachedPypi) {
+          const pypiResponse = await fetch(`https://pypi.org/pypi/${PYPI_PACKAGE}/json`);
+          if (pypiResponse.ok) {
+            const pypiData = await pypiResponse.json();
+            const pypiVersion = pypiData.info?.version || '';
+            if (pypiVersion) {
+              localStorage.setItem(CACHE_KEY_PYPI, JSON.stringify({
+                data: { version: pypiVersion },
+                timestamp: Date.now(),
+              }));
+              setLatestVersion(pypiVersion);
+            }
           }
         }
 

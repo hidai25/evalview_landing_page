@@ -149,7 +149,7 @@ const App: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                {releasesLoading ? 'Loading...' : `v${latestVersion || '0.2.4'} Public Beta`}
+                {releasesLoading ? 'Loading...' : `v${latestVersion || '0.3.1'} Public Beta`}
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]">

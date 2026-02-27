@@ -1,10 +1,18 @@
 import React from 'react';
-import { Github, ArrowRight, Clock, Tag, Rss, Bell } from 'lucide-react';
+import { Github, ArrowRight, Clock, Tag, Rss, Bell, Star } from 'lucide-react';
 import { blogPosts, getFeaturedPost, getNonFeaturedPosts } from '../data/blogPosts';
 import { useNavigation } from '../hooks/router';
+import { useGitHubReleases } from '../hooks/useGitHubReleases';
 
 const BlogNavbar: React.FC = () => {
   const { navigate } = useNavigation();
+  const { starCount } = useGitHubReleases();
+
+  const goToSection = (id: string) => {
+    navigate('/');
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100);
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -16,26 +24,25 @@ const BlogNavbar: React.FC = () => {
           <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
         </button>
         <div className="flex items-center gap-6">
+          <button onClick={() => goToSection('features')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Features</button>
+          <button onClick={() => goToSection('roadmap')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Cloud Roadmap</button>
+          <button onClick={() => goToSection('pricing')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Pricing</button>
+          <button onClick={() => goToSection('changelog')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Changelog</button>
           <span className="text-sm font-semibold text-cyan-400 hidden sm:block">Blog</span>
-          <a
-            href="/#features"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/');
-              setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 100);
-            }}
-            className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block"
-          >
-            Features
-          </a>
           <a
             href="https://github.com/hidai25/EvalView"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
           >
             <Github className="w-4 h-4" />
             <span className="hidden sm:inline">GitHub</span>
+            {starCount > 0 && (
+              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
+                <Star className="w-3 h-3 fill-amber-400" />
+                {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
+              </span>
+            )}
           </a>
           <button
             onClick={() => navigate('/')}
