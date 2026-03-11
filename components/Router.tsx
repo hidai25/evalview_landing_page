@@ -8,7 +8,7 @@ const BlogPost = lazy(() => import('../pages/BlogPost'));
 const LoadingScreen: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center bg-black">
     <div className="flex items-center gap-3 text-slate-400">
-      <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">🧪</span>
+      <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
       <span className="font-semibold text-white">EvalView</span>
     </div>
   </div>

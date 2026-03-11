@@ -207,7 +207,7 @@ const BlogNavbar: React.FC = () => {
           onClick={() => navigate('/')}
           className="flex items-center gap-2 cursor-pointer bg-transparent border-none"
         >
-          <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">🧪</span>
+          <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
           <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
         </button>
         <div className="flex items-center gap-6">
@@ -510,7 +510,7 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
         {/* CTA */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
           <div className="glass-card rounded-2xl p-8 text-center border border-cyan-500/10">
-            <div className="text-3xl mb-3">🧪</div>
+            <div className="mb-3"><img src="/logo.png" alt="EvalView" className="w-10 h-10 mx-auto" /></div>
             <h3 className="text-xl font-bold text-white mb-2">
               Start testing your AI agents today
             </h3>
@@ -544,7 +544,7 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
             onClick={() => navigate('/')}
             className="flex items-center gap-2 cursor-pointer bg-transparent border-none text-slate-500 hover:text-white transition-colors"
           >
-            <span className="text-xl">🧪</span>
+            <img src="/logo.png" alt="EvalView" className="w-6 h-6" />
             <span className="font-semibold text-white">EvalView</span>
           </button>
           <p>© 2026 EvalView. Open source under Apache 2.0.</p>

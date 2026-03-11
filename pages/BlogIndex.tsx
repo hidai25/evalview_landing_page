@@ -20,7 +20,7 @@ const BlogNavbar: React.FC = () => {
           onClick={() => navigate('/')}
           className="flex items-center gap-2 cursor-pointer bg-transparent border-none"
         >
-          <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">🧪</span>
+          <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
           <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
         </button>
         <div className="flex items-center gap-6">
@@ -262,7 +262,7 @@ const BlogIndex: React.FC = () => {
         {/* CTA Banner */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
           <div className="glass-card rounded-2xl p-8 sm:p-12 text-center border border-cyan-500/10">
-            <div className="text-4xl mb-4">🧪</div>
+            <div className="mb-4"><img src="/logo.png" alt="EvalView" className="w-12 h-12 mx-auto" /></div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
               Test your AI agents like you test your code
             </h2>
@@ -297,7 +297,7 @@ const BlogIndex: React.FC = () => {
             onClick={() => navigate('/')}
             className="flex items-center gap-2 cursor-pointer bg-transparent border-none text-slate-500 hover:text-white transition-colors"
           >
-            <span className="text-xl">🧪</span>
+            <img src="/logo.png" alt="EvalView" className="w-6 h-6" />
             <span className="font-semibold text-white">EvalView</span>
           </button>
           <p>© 2026 EvalView. Open source under Apache 2.0.</p>

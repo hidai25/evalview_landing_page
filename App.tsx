@@ -81,7 +81,7 @@ const App: React.FC = () => {
       <nav className="fixed top-0 w-full z-50 glass-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <span className="text-2xl filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">🧪</span>
+            <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
             <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
           </div>
           <div className="flex items-center gap-6">
@@ -900,7 +900,7 @@ const App: React.FC = () => {
       <footer className="border-t border-white/5 py-12 bg-[#000000]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
-            <span className="text-xl">🧪</span>
+            <img src="/logo.png" alt="EvalView" className="w-6 h-6" />
             <span className="font-bold text-white">EvalView</span>
           </div>
           
