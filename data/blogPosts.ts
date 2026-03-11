@@ -20,10 +20,113 @@ export interface BlogPostData {
   tags: string[];
   featured: boolean;
   published: boolean;
+  canonicalUrl?: string;
   content: InlineBlock[];
 }
 
 export const blogPosts: BlogPostData[] = [
+  {
+    slug: 'your-ai-agent-didnt-crash-it-just-started-lying',
+    title: "Your AI Agent Didn't Crash. It Just Quietly Started Lying.",
+    excerpt:
+      "The scariest agent bugs aren't the ones that throw errors. They're the ones where everything looks fine but the agent stopped calling its tools days ago and has been hallucinating ever since.",
+    date: 'March 11, 2026',
+    readTime: 4,
+    author: 'Hidai Bar-Mor',
+    authorRole: 'Creator of EvalView',
+    category: 'Engineering',
+    tags: ['Silent Failures', 'Regression Testing', 'Trajectory Testing'],
+    featured: true,
+    published: true,
+    canonicalUrl: 'https://dev.to/hidai25/your-ai-agent-did-not-crash-it-just-started-making-things-up-56m7',
+    content: [
+      {
+        type: 'paragraph',
+        text: "So I've been building AI agents for about a year now and the bugs that actually scare me aren't the ones that blow up. Those are easy. You get a stack trace, you fix it, you move on.",
+      },
+      {
+        type: 'paragraph',
+        text: "The scary ones are when everything looks totally fine. Agent responds, output is formatted right, user gets an answer. Except the agent stopped calling its tools three days ago and nobody noticed because the responses still looked legit. It was just making stuff up.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'This keeps happening',
+      },
+      {
+        type: 'paragraph',
+        text: "I see the same thing over and over across basically every agent framework out there. Some version update quietly drops tool access. Or the model behind the API gets updated server side and suddenly your agent stops using its tools. Or a checkpoint resumes with bad state. Or an entire sub agent team just doesnt run and the orchestrator fills in the gap with whatever sounds right.",
+      },
+      {
+        type: 'paragraph',
+        text: "No crash. No error. The output reads fine. Its just wrong.",
+      },
+      {
+        type: 'paragraph',
+        text: "And thats the problem. Your users cant tell. I couldnt tell. The only reason I caught it was because I happened to be looking at the logs for something else entirely.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'Why normal testing misses this completely',
+      },
+      {
+        type: 'paragraph',
+        text: 'Think about how most people test agents. You check the final output against some expected answer. Or you run an LLM judge that asks "is this response good" and it says yeah looks good to me.',
+      },
+      {
+        type: 'paragraph',
+        text: "But the output isnt whats broken. The execution path is. The agent took a completely different route to get to something that sounds similar enough to pass. It skipped tools, hallucinated data, took shortcuts. The answer looks plausible so everything passes.",
+      },
+      {
+        type: 'paragraph',
+        text: "Unit tests dont help because LLM outputs change every run. Integration tests dont help because the agent can literally hallucinate its way to a passing grade. I learned this the hard way.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'What I actually do now',
+      },
+      {
+        type: 'paragraph',
+        text: "I stopped testing outputs and started testing the execution path. Super simple idea honestly.",
+      },
+      {
+        type: 'paragraph',
+        text: "When my agent is working correctly I record everything. Which tools got called, what order, what parameters. I save that as a baseline. Then after any change I run the same thing again and diff the two traces.",
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `  ✓ login-flow           PASSED
+  ⚠ refund-request       TOOLS_CHANGED
+      - lookup_order → check_policy → process_refund
+      + lookup_order → process_refund
+  ✗ billing-dispute      REGRESSION  score 85 → 55`,
+      },
+      {
+        type: 'paragraph',
+        text: "Tools disappeared? I see it immediately. Score tanked? Same. Before any user does.",
+      },
+      {
+        type: 'paragraph',
+        text: "And most of this costs nothing. Diffing tool calls is just string comparison, no API calls. You only need a judge for output quality and even then you can run it selectively.",
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: 'If you take one thing from this',
+      },
+      {
+        type: 'paragraph',
+        text: "Just start recording your agents tool calls. Seriously. Even if you do nothing else. Save what the agent does when its working, and compare against that after you make changes. Prompt tweaks, model swaps, dependency bumps, all of it.",
+      },
+      {
+        type: 'paragraph',
+        text: "I ended up building a whole tool around this called **EvalView** because I got tired of doing it manually. But the practice matters way more than whatever tool you use. Just start diffing trajectories and you'll catch stuff you never would have found otherwise.",
+      },
+    ],
+  },
   {
     slug: 'why-your-ai-agent-has-a-hidden-bug-in-production',
     title: 'Why Your AI Agent Has a Hidden Bug in Production Right Now',
@@ -35,7 +138,7 @@ export const blogPosts: BlogPostData[] = [
     authorRole: 'Product & Engineering',
     category: 'Engineering',
     tags: ['Production', 'Testing', 'AI Reliability'],
-    featured: true,
+    featured: false,
     published: false,
     content: [
       {

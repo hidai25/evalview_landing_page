@@ -304,6 +304,29 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
     );
   }
 
+  /* ── Canonical link for syndicated posts ──────────────────────── */
+  useEffect(() => {
+    // Remove any existing canonical set by other pages
+    const existing = document.querySelector('link[rel="canonical"]');
+    if (post.canonicalUrl) {
+      if (existing) {
+        existing.setAttribute('href', post.canonicalUrl);
+      } else {
+        const link = document.createElement('link');
+        link.rel = 'canonical';
+        link.href = post.canonicalUrl;
+        document.head.appendChild(link);
+      }
+    } else if (existing) {
+      existing.setAttribute('href', `https://www.evalview.com/blog/${slug}`);
+    }
+    return () => {
+      // Reset to site default on unmount
+      const el = document.querySelector('link[rel="canonical"]');
+      if (el) el.setAttribute('href', 'https://www.evalview.com');
+    };
+  }, [post.canonicalUrl, slug]);
+
   if (!post.published) {
     return (
       <div className="min-h-screen font-sans selection:bg-cyan-500/30 text-slate-300">
