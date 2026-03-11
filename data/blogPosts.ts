@@ -35,7 +35,7 @@ export const blogPosts: BlogPostData[] = [
     author: 'Hidai Bar-Mor',
     authorRole: 'Creator of EvalView',
     category: 'Engineering',
-    tags: ['Silent Failures', 'Regression Testing', 'Trajectory Testing'],
+    tags: ['AI Agents', 'LLM', 'Testing', 'Production'],
     featured: true,
     published: true,
     canonicalUrl: 'https://dev.to/hidai25/your-ai-agent-did-not-crash-it-just-started-making-things-up-56m7',
@@ -124,6 +124,33 @@ export const blogPosts: BlogPostData[] = [
       {
         type: 'paragraph',
         text: "I ended up building a whole tool around this called **EvalView** because I got tired of doing it manually. But the practice matters way more than whatever tool you use. Just start diffing trajectories and you'll catch stuff you never would have found otherwise.",
+      },
+      {
+        type: 'divider',
+      },
+      {
+        type: 'paragraph',
+        text: "That is the workflow I wanted, so I built **EvalView** around it.",
+      },
+      {
+        type: 'paragraph',
+        text: "Snapshot behavior. Compare runs. Catch regressions before they hit production.",
+      },
+      {
+        type: 'paragraph',
+        text: "But even if you never use EvalView, I think this habit is worth adopting right now.",
+      },
+      {
+        type: 'paragraph',
+        text: "Start recording tool calls. Start diffing trajectories. Start treating agent behavior like something you can baseline, compare, and protect.",
+      },
+      {
+        type: 'paragraph',
+        text: "Because your AI agent usually will not crash when it breaks. It will just get smoother at being wrong.",
+      },
+      {
+        type: 'paragraph',
+        text: "If you have seen this happen in production, I would genuinely love to hear your story.",
       },
     ],
   },
