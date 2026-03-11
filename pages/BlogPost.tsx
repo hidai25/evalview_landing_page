@@ -426,11 +426,7 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
               {post.title}
             </h1>
 
-            <p className="text-lg text-slate-400 leading-relaxed mb-7">
-              {post.excerpt}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-between gap-4 py-5 border-t border-b border-white/6">
+            <div className="flex flex-wrap items-center justify-between gap-4 py-5 border-t border-b border-white/6 mb-7">
               <div className="flex items-center gap-4 text-sm text-slate-400">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500/40 to-blue-500/30 border border-white/10 flex items-center justify-center text-xs font-bold text-white">
