@@ -16,10 +16,24 @@ import { useNavigation } from '../hooks/router';
 
 /* ─── Inline text renderer ─────────────────────────────────────── */
 const renderInline = (text: string): React.ReactNode => {
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g);
+  const parts = text.split(/(\[(?:[^\]]+)\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g);
   return (
     <>
       {parts.map((part, i) => {
+        const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+        if (linkMatch) {
+          return (
+            <a
+              key={i}
+              href={linkMatch[2]}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 transition-colors"
+            >
+              {linkMatch[1]}
+            </a>
+          );
+        }
         if (part.startsWith('**') && part.endsWith('**')) {
           return (
             <strong key={i} className="text-white font-semibold">
