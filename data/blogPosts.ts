@@ -123,15 +123,7 @@ export const blogPosts: BlogPostData[] = [
       },
       {
         type: 'paragraph',
-        text: "I ended up building a whole tool around this called [EvalView](https://github.com/hidai25/eval-view) because I got tired of doing it manually. But the practice matters way more than whatever tool you use. Just start diffing trajectories and you'll catch stuff you never would have found otherwise.",
-      },
-      {
-        type: 'paragraph',
-        text: "That is the workflow I wanted, so I built [EvalView](https://github.com/hidai25/eval-view) around it.",
-      },
-      {
-        type: 'paragraph',
-        text: "Snapshot behavior. Compare runs. Catch regressions before they hit production.",
+        text: "I ended up building [EvalView](https://github.com/hidai25/eval-view) around this. Snapshot behavior. Compare runs. Catch regressions before they hit production.",
       },
       {
         type: 'paragraph',
