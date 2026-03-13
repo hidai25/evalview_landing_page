@@ -4,6 +4,7 @@ import App from '../App';
 
 const BlogIndex = lazy(() => import('../pages/BlogIndex'));
 const BlogPost = lazy(() => import('../pages/BlogPost'));
+const SeoPage = lazy(() => import('../pages/SeoPage'));
 
 const LoadingScreen: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center bg-black">
@@ -30,6 +31,20 @@ const Router: React.FC = () => {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <BlogPost slug={slug} />
+      </Suspense>
+    );
+  }
+
+  if (
+    path === '/vs/langsmith' ||
+    path === '/vs/langfuse' ||
+    path === '/vs/braintrust' ||
+    path === '/vs/deepeval' ||
+    path === '/ai-agent-testing-ci-cd'
+  ) {
+    return (
+      <Suspense fallback={<LoadingScreen />}>
+        <SeoPage path={path} />
       </Suspense>
     );
   }

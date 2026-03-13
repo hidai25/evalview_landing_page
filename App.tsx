@@ -50,6 +50,7 @@ import {
 import Terminal from './components/Terminal';
 import WaitlistForm from './components/WaitlistForm';
 import CodeBlock from './components/CodeBlock';
+import { usePageMetadata } from './hooks/usePageMetadata';
 
 const App: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -68,6 +69,12 @@ const App: React.FC = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  usePageMetadata({
+    title: 'EvalView – pytest for AI Agents | Open Source Agent Testing Framework',
+    description: 'EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.',
+    path: '/',
+  });
 
   return (
     <div className="min-h-screen font-sans selection:bg-cyan-500/30 selection:text-cyan-50 text-slate-300">
@@ -274,49 +281,89 @@ const App: React.FC = () => {
                     <span>Security-first (run locally)</span>
                   </li>
                 </ul>
+                <button
+                  onClick={() => navigate('/vs/langsmith')}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors bg-transparent border-none cursor-pointer"
+                >
+                  Read comparison
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
 
               <div className="glass-card p-8 rounded-2xl border-l-4 border-l-blue-500">
                 <div className="flex items-center gap-3 mb-4">
                   <Activity className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-xl font-bold text-white">vs. AgentOps</h3>
+                  <h3 className="text-xl font-bold text-white">vs. Langfuse</h3>
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>Comprehensive testing (not just monitoring)</span>
+                    <span>Regression gating, not just monitoring</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>Local-first architecture</span>
+                    <span>Generate a suite from a URL or logs</span>
                   </li>
                    <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>Regression prevention</span>
+                    <span>Golden baselines for tool-calling agents</span>
                   </li>
                 </ul>
+                <button
+                  onClick={() => navigate('/vs/langfuse')}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors bg-transparent border-none cursor-pointer"
+                >
+                  Read comparison
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
 
               <div className="glass-card p-8 rounded-2xl border-l-4 border-l-purple-500">
                 <div className="flex items-center gap-3 mb-4">
                   <Zap className="w-6 h-6 text-purple-400" />
-                  <h3 className="text-xl font-bold text-white">vs. Others</h3>
+                  <h3 className="text-xl font-bold text-white">vs. Braintrust & DeepEval</h3>
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>7+ Framework adapters</span>
+                    <span>Regression testing, not just scoring</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>Zero-config auto-connect</span>
+                    <span>Trajectory and tool-path diffs</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm text-slate-300">
                     <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>Advanced hallucination detection</span>
+                    <span>Approval-gated draft suite generation</span>
                   </li>
                 </ul>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <button
+                    onClick={() => navigate('/vs/braintrust')}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors bg-transparent border-none cursor-pointer"
+                  >
+                    Braintrust
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => navigate('/vs/deepeval')}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors bg-transparent border-none cursor-pointer"
+                  >
+                    DeepEval
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
+            </div>
+
+            <div className="mt-10 text-center">
+              <button
+                onClick={() => navigate('/ai-agent-testing-ci-cd')}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors bg-transparent border-none cursor-pointer"
+              >
+                Read the AI agent testing in CI/CD guide
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </section>

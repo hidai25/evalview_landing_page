@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { getBlogPost, blogPosts, InlineBlock } from '../data/blogPosts';
 import { useNavigation } from '../hooks/router';
+import { usePageMetadata } from '../hooks/usePageMetadata';
 
 /* ─── Inline text renderer ─────────────────────────────────────── */
 const renderInline = (text: string): React.ReactNode => {
@@ -302,6 +303,44 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
   const post = getBlogPost(slug);
   const otherPosts = blogPosts.filter((p) => p.slug !== slug).slice(0, 2);
 
+  usePageMetadata({
+    title: post ? `${post.title} | EvalView Blog` : 'EvalView Blog | AI Agent Testing and Reliability',
+    description: post
+      ? post.excerpt
+      : 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
+    path: post ? `/blog/${slug}` : '/blog',
+  });
+
+  /* ── Canonical link for syndicated posts ──────────────────────── */
+  useEffect(() => {
+    const existing = document.querySelector('link[rel="canonical"]');
+
+    if (!post) {
+      if (existing) {
+        existing.setAttribute('href', 'https://www.evalview.com/blog');
+      }
+      return;
+    }
+
+    if (post.canonicalUrl) {
+      if (existing) {
+        existing.setAttribute('href', post.canonicalUrl);
+      } else {
+        const link = document.createElement('link');
+        link.rel = 'canonical';
+        link.href = post.canonicalUrl;
+        document.head.appendChild(link);
+      }
+    } else if (existing) {
+      existing.setAttribute('href', `https://www.evalview.com/blog/${slug}`);
+    }
+
+    return () => {
+      const el = document.querySelector('link[rel="canonical"]');
+      if (el) el.setAttribute('href', 'https://www.evalview.com');
+    };
+  }, [post, slug]);
+
   if (!post) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-black text-slate-300 font-sans gap-6">
@@ -317,29 +356,6 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
       </div>
     );
   }
-
-  /* ── Canonical link for syndicated posts ──────────────────────── */
-  useEffect(() => {
-    // Remove any existing canonical set by other pages
-    const existing = document.querySelector('link[rel="canonical"]');
-    if (post.canonicalUrl) {
-      if (existing) {
-        existing.setAttribute('href', post.canonicalUrl);
-      } else {
-        const link = document.createElement('link');
-        link.rel = 'canonical';
-        link.href = post.canonicalUrl;
-        document.head.appendChild(link);
-      }
-    } else if (existing) {
-      existing.setAttribute('href', `https://www.evalview.com/blog/${slug}`);
-    }
-    return () => {
-      // Reset to site default on unmount
-      const el = document.querySelector('link[rel="canonical"]');
-      if (el) el.setAttribute('href', 'https://www.evalview.com');
-    };
-  }, [post.canonicalUrl, slug]);
 
   if (!post.published) {
     return (

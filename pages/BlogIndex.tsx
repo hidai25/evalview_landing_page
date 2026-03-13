@@ -3,6 +3,7 @@ import { Github, ArrowRight, Clock, Tag, Rss, Bell, Star } from 'lucide-react';
 import { blogPosts, getFeaturedPost, getNonFeaturedPosts } from '../data/blogPosts';
 import { useNavigation } from '../hooks/router';
 import { useGitHubReleases } from '../hooks/useGitHubReleases';
+import { usePageMetadata } from '../hooks/usePageMetadata';
 
 const BlogNavbar: React.FC = () => {
   const { navigate } = useNavigation();
@@ -76,6 +77,11 @@ const BlogIndex: React.FC = () => {
   const featured = getFeaturedPost();
   const rest = getNonFeaturedPosts();
   const hasPublished = featured !== undefined || rest.length > 0;
+  usePageMetadata({
+    title: 'EvalView Blog | AI Agent Testing, Reliability, and CI',
+    description: 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
+    path: '/blog',
+  });
 
   // All upcoming posts (for teaser cards)
   const upcomingPosts = blogPosts.filter((p) => !p.published);
