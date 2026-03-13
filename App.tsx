@@ -74,6 +74,24 @@ const App: React.FC = () => {
     title: 'EvalView – pytest for AI Agents | Open Source Agent Testing Framework',
     description: 'EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.',
     path: '/',
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'EvalView',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'Cross-platform',
+        description:
+          'Open-source testing framework for AI agents. Generate tests, snapshot behavior, detect regressions, and gate tool-calling agents in CI/CD.',
+        url: 'https://www.evalview.com',
+        downloadUrl: 'https://pypi.org/project/evalview/',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+      },
+    ],
   });
 
   return (
@@ -364,6 +382,57 @@ const App: React.FC = () => {
                 Read the AI agent testing in CI/CD guide
                 <ArrowRight className="w-4 h-4" />
               </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-18 relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-end justify-between gap-6 mb-10 flex-wrap">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Popular Search Guides</h2>
+                <p className="text-slate-400 max-w-2xl">
+                  These are the pages people actually search for when they are trying to test and ship AI agents safely.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                {
+                  title: 'AI Agent Regression Testing',
+                  path: '/ai-agent-regression-testing',
+                  body: 'How to snapshot behavior, diff trajectories, and stop broken agent changes before production.',
+                },
+                {
+                  title: 'MCP Server Testing',
+                  path: '/mcp-server-testing',
+                  body: 'How to test MCP tools, tool choice, tool arguments, and safety contracts.',
+                },
+                {
+                  title: 'LangGraph Testing',
+                  path: '/langgraph-testing',
+                  body: 'How to regression-test LangGraph flows in CI/CD after graph and prompt changes.',
+                },
+                {
+                  title: 'Tool-Calling Agent Testing',
+                  path: '/tool-calling-agent-testing',
+                  body: 'How to verify tool presence, tool order, and safe multi-step agent behavior.',
+                },
+              ].map((guide) => (
+                <button
+                  key={guide.path}
+                  onClick={() => navigate(guide.path)}
+                  className="text-left glass-card p-6 rounded-2xl border border-white/6 hover:border-cyan-500/25 transition-all cursor-pointer"
+                >
+                  <h3 className="text-lg font-bold text-white mb-3">{guide.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed mb-4">{guide.body}</p>
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-400">
+                    Read guide
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </section>

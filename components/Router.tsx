@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { useNavigation } from '../hooks/router';
 import App from '../App';
+import { seoPages } from '../data/seoPages';
 
 const BlogIndex = lazy(() => import('../pages/BlogIndex'));
 const BlogPost = lazy(() => import('../pages/BlogPost'));
@@ -35,13 +36,7 @@ const Router: React.FC = () => {
     );
   }
 
-  if (
-    path === '/vs/langsmith' ||
-    path === '/vs/langfuse' ||
-    path === '/vs/braintrust' ||
-    path === '/vs/deepeval' ||
-    path === '/ai-agent-testing-ci-cd'
-  ) {
+  if (path in seoPages) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <SeoPage path={path} />

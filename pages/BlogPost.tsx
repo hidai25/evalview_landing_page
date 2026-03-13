@@ -309,6 +309,30 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
       ? post.excerpt
       : 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
     path: post ? `/blog/${slug}` : '/blog',
+    ogType: post ? 'article' : 'website',
+    structuredData: post
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.excerpt,
+            url: post.canonicalUrl || `https://www.evalview.com/blog/${slug}`,
+            author: {
+              '@type': 'Person',
+              name: 'Hidai Bar-Mor',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'EvalView',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.evalview.com/logo.png',
+              },
+            },
+          },
+        ]
+      : [],
   });
 
   /* ── Canonical link for syndicated posts ──────────────────────── */

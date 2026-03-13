@@ -81,6 +81,15 @@ const BlogIndex: React.FC = () => {
     title: 'EvalView Blog | AI Agent Testing, Reliability, and CI',
     description: 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
     path: '/blog',
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'EvalView Blog',
+        description: 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
+        url: 'https://www.evalview.com/blog',
+      },
+    ],
   });
 
   // All upcoming posts (for teaser cards)
