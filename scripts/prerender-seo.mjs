@@ -296,6 +296,43 @@ evalview check tests/generated</code></pre>
       <p>Start recording tool calls. Start diffing trajectories. Start treating agent behavior like something you can baseline, compare, and protect.</p>
     </article>
     <p><a href="/blog">Back to blog</a> | <a href="/">Back to EvalView homepage</a></p>`,
+
+  '/privacy': `
+    <h1>Privacy Policy</h1>
+    <p><em>Last updated: March 19, 2026</em></p>
+    <h2>Overview</h2>
+    <p>EvalView is an open-source project maintained by Hidai Bar-Mor. This policy explains how we handle data when you visit evalview.com.</p>
+    <h2>What we collect</h2>
+    <p><strong>Website analytics:</strong> We use Google Analytics (GA4) to understand how visitors use evalview.com. Google Analytics collects anonymized usage data including pages visited, time on site, referral source, and browser type. This data is aggregated and cannot identify you personally.</p>
+    <p><strong>Waitlist emails:</strong> If you join our Cloud waitlist, we collect your email address. We use this only to notify you about EvalView Cloud availability. We never sell or share your email with third parties.</p>
+    <h2>The open-source CLI tool</h2>
+    <p>The EvalView CLI tool (pip install evalview) runs entirely on your machine. It does not send data to our servers unless you explicitly opt in to anonymous telemetry. Test data, golden baselines, and results stay local by default.</p>
+    <h2>Cookies</h2>
+    <p>Google Analytics sets cookies to distinguish unique visitors and track sessions. You can opt out using a browser extension or by enabling Do Not Track in your browser settings.</p>
+    <h2>Your rights</h2>
+    <p>You can request deletion of your waitlist email at any time by emailing hidai@evalview.com.</p>
+    <h2>Contact</h2>
+    <p>Questions about privacy? Email <a href="mailto:hidai@evalview.com">hidai@evalview.com</a>.</p>
+    <p><a href="/">Back to EvalView homepage</a></p>`,
+
+  '/terms': `
+    <h1>Terms of Service</h1>
+    <p><em>Last updated: March 19, 2026</em></p>
+    <h2>Overview</h2>
+    <p>These terms govern your use of evalview.com and the EvalView open-source software. By using the website or software, you agree to these terms.</p>
+    <h2>The open-source software</h2>
+    <p>EvalView is distributed under the Apache 2.0 license. You are free to use, modify, and distribute the software in accordance with that license. The software is provided "as is" without warranty of any kind.</p>
+    <h2>The website</h2>
+    <p>evalview.com provides documentation, comparisons, and marketing information about EvalView. We make reasonable efforts to keep the content accurate but don't guarantee all information is current or error-free.</p>
+    <h2>Cloud waitlist</h2>
+    <p>The EvalView Cloud waitlist is a notification list only. Joining does not create a service agreement or guarantee access to any future product.</p>
+    <h2>Intellectual property</h2>
+    <p>The EvalView name, logo, and website design are the property of Hidai Bar-Mor. The open-source software is licensed under Apache 2.0. Content on the website may be quoted with attribution.</p>
+    <h2>Limitation of liability</h2>
+    <p>To the fullest extent permitted by law, EvalView and its maintainers are not liable for any indirect, incidental, special, or consequential damages arising from your use of the software or website.</p>
+    <h2>Contact</h2>
+    <p>Questions about these terms? Email <a href="mailto:hidai@evalview.com">hidai@evalview.com</a>.</p>
+    <p><a href="/">Back to EvalView homepage</a></p>`,
 };
 
 // ---------------------------------------------------------------------------
@@ -495,6 +532,18 @@ const routes = [
         },
       },
     ],
+  },
+  {
+    path: '/privacy',
+    title: 'Privacy Policy | EvalView',
+    description:
+      'EvalView privacy policy. How we handle your data when you visit evalview.com.',
+  },
+  {
+    path: '/terms',
+    title: 'Terms of Service | EvalView',
+    description:
+      'EvalView terms of service for evalview.com and the EvalView open-source software.',
   },
 ];
 

@@ -18,7 +18,8 @@ const Footer: React.FC = () => {
         <div className="flex items-center gap-5">
           <a href="https://github.com/hidai25/eval-view" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
           <button onClick={() => navigate('/blog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Blog</button>
-          <button onClick={() => navigate('/')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Home</button>
+          <button onClick={() => navigate('/privacy')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Privacy</button>
+          <button onClick={() => navigate('/terms')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Terms</button>
         </div>
       </div>
     </footer>

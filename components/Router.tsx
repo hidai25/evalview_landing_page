@@ -6,6 +6,7 @@ import { seoPages } from '../data/seoPages';
 const BlogIndex = lazy(() => import('../pages/BlogIndex'));
 const BlogPost = lazy(() => import('../pages/BlogPost'));
 const SeoPage = lazy(() => import('../pages/SeoPage'));
+const LegalPage = lazy(() => import('../pages/LegalPage'));
 
 const LoadingScreen: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center bg-black">
@@ -32,6 +33,14 @@ const Router: React.FC = () => {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <BlogPost slug={slug} />
+      </Suspense>
+    );
+  }
+
+  if (path === '/privacy' || path === '/terms') {
+    return (
+      <Suspense fallback={<LoadingScreen />}>
+        <LegalPage path={path} />
       </Suspense>
     );
   }
