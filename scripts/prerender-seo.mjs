@@ -341,6 +341,60 @@ const routes = [
           cssSelector: ['h1', 'h2', '[data-prerendered]'],
         },
       },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'What is EvalView?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'EvalView is an open-source regression testing framework for AI agents. It sends test queries to your agent, records everything (tool calls, parameters, sequence, output, cost, latency), and diffs against a golden baseline. Install with pip install evalview.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How is EvalView different from LangSmith?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: "LangSmith is for observability and tracing — it shows you what your agent did. EvalView is for testing and regression detection — it tells you whether your agent broke. They're complementary tools.",
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is EvalView free?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. EvalView is free and open source under the Apache 2.0 license. Core regression detection works without any API keys. Use Ollama for completely free, fully offline LLM-as-judge evaluation.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What frameworks does EvalView support?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'EvalView works with LangGraph, CrewAI, OpenAI Assistants, Anthropic Claude, HuggingFace, Ollama, MCP servers, and any HTTP API. It also supports SKILL.md validation for Claude Code and OpenAI Codex.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can EvalView run in CI/CD?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. EvalView has a GitHub Action (hidai25/eval-view@v0.5.3), exit codes, JSON output, and PR comments with cost/latency/model change alerts. It works with GitHub Actions, GitLab CI, CircleCI, and any CI system that runs Python.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can EvalView handle non-deterministic LLM outputs?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. EvalView provides multi-reference goldens (up to 5 variants per test), statistical mode with pass@k metrics, flexible subsequence matching, and tool categories that match by intent instead of exact names.',
+            },
+          },
+        ],
+      },
     ],
   },
   {
