@@ -72,7 +72,7 @@ const App: React.FC = () => {
 
   usePageMetadata({
     title: 'EvalView – pytest for AI Agents | Open Source Agent Testing Framework',
-    description: 'EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.',
+    description: 'EvalView provides regression guardrails for agents. Generate tests, snapshot behavior, and catch silent regressions in CI before they hit production.',
     path: '/',
     structuredData: [
       {
@@ -82,7 +82,7 @@ const App: React.FC = () => {
         applicationCategory: 'DeveloperApplication',
         operatingSystem: 'Cross-platform',
         description:
-          'Open-source testing framework for AI agents. Generate tests, snapshot behavior, detect regressions, and gate tool-calling agents in CI/CD.',
+          'Regression guardrails for agents. Generate tests, snapshot behavior, detect regressions, and gate agent changes in CI/CD.',
         url: 'https://www.evalview.com',
         downloadUrl: 'https://pypi.org/project/evalview/',
         offers: {
@@ -275,7 +275,7 @@ const App: React.FC = () => {
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Why EvalView vs Tracing-Only Tools?</h2>
               <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-                Production-ready, open-source testing with comprehensive evaluation.
+                Regression guardrails for agents, not just dashboards after something already changed.
               </p>
             </div>
 
@@ -440,8 +440,8 @@ const App: React.FC = () => {
         {/* Main Features Grid (Categorized) */}
         <section id="features" className="py-24 scroll-mt-24 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Complete AI Agent Testing Suite</h2>
+          <div className="mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Regression Guardrails for Agents</h2>
               <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
             </div>
 
@@ -1024,7 +1024,7 @@ const App: React.FC = () => {
             <a href="https://github.com/hidai25/EvalView" className="hover:text-white transition-colors">GitHub</a>
             <a href="https://github.com/hidai25/EvalView#readme" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a>
             <button onClick={() => scrollToSection('changelog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Changelog</button>
-            <a href="#" className="hover:text-white transition-colors">Twitter</a>
+            <a href="https://x.com/Hidai_barmor" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
           </div>
 
           <div className="text-sm text-slate-600">
