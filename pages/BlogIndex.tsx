@@ -1,76 +1,12 @@
 import React from 'react';
-import { Github, ArrowRight, Clock, Tag, Rss, Bell, Star } from 'lucide-react';
+import { ArrowRight, Clock, Tag, Rss, Bell } from 'lucide-react';
 import { blogPosts, getFeaturedPost, getNonFeaturedPosts } from '../data/blogPosts';
 import { useNavigation } from '../hooks/router';
-import { useGitHubReleases } from '../hooks/useGitHubReleases';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-
-const BlogNavbar: React.FC = () => {
-  const { navigate } = useNavigation();
-  const { starCount } = useGitHubReleases();
-
-  const goToSection = (id: string) => {
-    navigate('/');
-    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100);
-  };
-
-  return (
-    <nav className="fixed top-0 w-full z-50 glass-nav">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 cursor-pointer bg-transparent border-none"
-        >
-          <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
-          <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
-        </button>
-        <div className="flex items-center gap-6">
-          <button onClick={() => goToSection('features')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Features</button>
-          <button onClick={() => goToSection('roadmap')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Cloud Roadmap</button>
-          <button onClick={() => goToSection('pricing')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Pricing</button>
-          <button onClick={() => goToSection('changelog')} className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer">Changelog</button>
-          <span className="text-sm font-semibold text-cyan-400 hidden sm:block">Blog</span>
-          <a
-            href="https://github.com/hidai25/EvalView"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-          >
-            <Github className="w-4 h-4" />
-            <span className="hidden sm:inline">GitHub</span>
-            {starCount > 0 && (
-              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
-                <Star className="w-3 h-3 fill-amber-400" />
-                {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
-              </span>
-            )}
-          </a>
-          <button
-            onClick={() => navigate('/')}
-            className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/10 transition-all backdrop-blur-sm group cursor-pointer"
-          >
-            <span>Join Cloud Waitlist</span>
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-          </button>
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-const CategoryBadge: React.FC<{ category: string }> = ({ category }) => {
-  const colors: Record<string, string> = {
-    Engineering: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
-    Observability: 'bg-purple-500/10 border-purple-500/20 text-purple-400',
-    Tutorial: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
-  };
-  const cls = colors[category] ?? 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400';
-  return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${cls}`}>
-      {category}
-    </span>
-  );
-};
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import CategoryBadge from '../components/CategoryBadge';
+import CtaBanner from '../components/CtaBanner';
 
 const BlogIndex: React.FC = () => {
   const { navigate } = useNavigation();
@@ -102,7 +38,7 @@ const BlogIndex: React.FC = () => {
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
       <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
 
-      <BlogNavbar />
+      <Navbar activePage="blog" showFullNav />
 
       <main className="relative z-10 pt-24 pb-20">
         {/* Hero */}
@@ -276,53 +212,11 @@ const BlogIndex: React.FC = () => {
 
         {/* CTA Banner */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-          <div className="glass-card rounded-2xl p-8 sm:p-12 text-center border border-cyan-500/10">
-            <div className="mb-4"><img src="/logo.png" alt="EvalView" className="w-12 h-12 mx-auto" /></div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-              Test your AI agents like you test your code
-            </h2>
-            <p className="text-slate-400 mb-8 max-w-xl mx-auto">
-              EvalView is open-source and takes under 15 minutes to set up. Catch hallucinations, regressions,
-              and cost spikes before production.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="https://github.com/hidai25/EvalView"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-slate-200 px-5 py-3 rounded-lg border border-white/10 transition-all font-mono text-sm hover:border-cyan-500/30 cursor-pointer"
-              >
-                pip install evalview
-              </a>
-              <button
-                onClick={() => navigate('/')}
-                className="inline-flex items-center justify-center gap-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 px-5 py-3 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all text-sm font-semibold cursor-pointer"
-              >
-                Learn more <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <CtaBanner />
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 py-10 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 cursor-pointer bg-transparent border-none text-slate-500 hover:text-white transition-colors"
-          >
-            <img src="/logo.png" alt="EvalView" className="w-6 h-6" />
-            <span className="font-semibold text-white">EvalView</span>
-          </button>
-          <p>© 2026 EvalView. Open source under Apache 2.0.</p>
-          <div className="flex items-center gap-5">
-            <a href="https://github.com/hidai25/EvalView" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-            <button onClick={() => navigate('/blog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Blog</button>
-            <button onClick={() => navigate('/')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-slate-500">Home</button>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

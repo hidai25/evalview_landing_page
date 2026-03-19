@@ -1,55 +1,13 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, Github, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigation } from '../hooks/router';
 import { seoPages } from '../data/seoPages';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { useGitHubReleases } from '../hooks/useGitHubReleases';
+import Navbar from '../components/Navbar';
 
 interface SeoPageProps {
   path: string;
 }
-
-const SeoNavbar: React.FC = () => {
-  const { navigate } = useNavigation();
-  const { starCount } = useGitHubReleases();
-
-  return (
-    <nav className="fixed top-0 w-full z-50 glass-nav">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 cursor-pointer bg-transparent border-none"
-        >
-          <img src="/logo.png" alt="EvalView" className="w-8 h-8 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
-          <span className="font-bold text-lg tracking-tight text-white">EvalView</span>
-        </button>
-        <div className="flex items-center gap-6">
-          <button
-            onClick={() => navigate('/blog')}
-            className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block bg-transparent border-none cursor-pointer"
-          >
-            Blog
-          </button>
-          <a
-            href="https://github.com/hidai25/EvalView"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-          >
-            <Github className="w-4 h-4" />
-            <span className="hidden sm:inline">GitHub</span>
-            {starCount > 0 && (
-              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
-                <Star className="w-3 h-3 fill-amber-400" />
-                {starCount >= 1000 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
-              </span>
-            )}
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
-};
 
 const SeoPage: React.FC<SeoPageProps> = ({ path }) => {
   const { navigate } = useNavigation();
@@ -73,7 +31,7 @@ const SeoPage: React.FC<SeoPageProps> = ({ path }) => {
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
       <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
 
-      <SeoNavbar />
+      <Navbar />
 
       <main className="relative z-10 pt-24 pb-24">
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
@@ -152,7 +110,7 @@ const SeoPage: React.FC<SeoPageProps> = ({ path }) => {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://github.com/hidai25/EvalView"
+                href="https://github.com/hidai25/eval-view"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white text-black hover:bg-slate-200 px-5 py-3 rounded-lg font-semibold transition-all"
