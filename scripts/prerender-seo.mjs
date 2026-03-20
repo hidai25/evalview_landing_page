@@ -699,6 +699,11 @@ function renderRoute(baseHtml, route) {
     );
   }
 
+  // Remove homepage noscript block from subpages (prevents content duplication)
+  if (route.path !== '/') {
+    html = html.replace(/<noscript>[\s\S]*?<\/noscript>/, '');
+  }
+
   return html;
 }
 
