@@ -23,7 +23,7 @@ const BlogIndex: React.FC = () => {
         '@type': 'CollectionPage',
         name: 'EvalView Blog',
         description: 'Engineering deep-dives, reliability guides, and practical CI workflows for teams building and testing AI agents.',
-        url: 'https://www.evalview.com/blog',
+        url: 'https://evalview.com/blog',
       },
     ],
   });

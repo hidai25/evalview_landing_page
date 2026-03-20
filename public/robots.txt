@@ -43,7 +43,7 @@ User-agent: Meta-ExternalAgent
 Allow: /
 
 # Sitemap
-Sitemap: https://www.evalview.com/sitemap.xml
+Sitemap: https://evalview.com/sitemap.xml
 
 # AI-readable documentation (https://llmstxt.org)
-# llms.txt: https://www.evalview.com/llms.txt
+# llms.txt: https://evalview.com/llms.txt

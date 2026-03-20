@@ -265,8 +265,8 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
             '@type': 'Article',
             headline: post.title,
             description: post.excerpt,
-            url: post.canonicalUrl || `https://www.evalview.com/blog/${slug}`,
-            image: 'https://www.evalview.com/og-image.png',
+            url: post.canonicalUrl || `https://evalview.com/blog/${slug}`,
+            image: 'https://evalview.com/og-image.png',
             datePublished: post.date,
             dateModified: post.date,
             author: {
@@ -277,10 +277,10 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
             publisher: {
               '@type': 'Organization',
               name: 'EvalView',
-              url: 'https://www.evalview.com',
+              url: 'https://evalview.com',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://www.evalview.com/logo.png',
+                url: 'https://evalview.com/logo.png',
               },
             },
           },
@@ -294,7 +294,7 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
 
     if (!post) {
       if (existing) {
-        existing.setAttribute('href', 'https://www.evalview.com/blog');
+        existing.setAttribute('href', 'https://evalview.com/blog');
       }
       return;
     }
@@ -309,12 +309,12 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
         document.head.appendChild(link);
       }
     } else if (existing) {
-      existing.setAttribute('href', `https://www.evalview.com/blog/${slug}`);
+      existing.setAttribute('href', `https://evalview.com/blog/${slug}`);
     }
 
     return () => {
       const el = document.querySelector('link[rel="canonical"]');
-      if (el) el.setAttribute('href', 'https://www.evalview.com');
+      if (el) el.setAttribute('href', 'https://evalview.com');
     };
   }, [post, slug]);
 

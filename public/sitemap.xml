@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.evalview.com/</loc>
+    <loc>https://evalview.com/</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/blog</loc>
+    <loc>https://evalview.com/blog</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/blog/your-ai-agent-didnt-crash-it-just-started-lying</loc>
+    <loc>https://evalview.com/blog/your-ai-agent-didnt-crash-it-just-started-lying</loc>
     <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/vs/langsmith</loc>
+    <loc>https://evalview.com/vs/langsmith</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/vs/langfuse</loc>
+    <loc>https://evalview.com/vs/langfuse</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/vs/braintrust</loc>
+    <loc>https://evalview.com/vs/braintrust</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/vs/deepeval</loc>
+    <loc>https://evalview.com/vs/deepeval</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/ai-agent-testing-ci-cd</loc>
+    <loc>https://evalview.com/ai-agent-testing-ci-cd</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/ai-agent-regression-testing</loc>
+    <loc>https://evalview.com/ai-agent-regression-testing</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/mcp-server-testing</loc>
+    <loc>https://evalview.com/mcp-server-testing</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/langgraph-testing</loc>
+    <loc>https://evalview.com/langgraph-testing</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/tool-calling-agent-testing</loc>
+    <loc>https://evalview.com/tool-calling-agent-testing</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/privacy</loc>
+    <loc>https://evalview.com/privacy</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.evalview.com/terms</loc>
+    <loc>https://evalview.com/terms</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

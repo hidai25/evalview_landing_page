@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const SITE_URL = 'https://www.evalview.com';
+const SITE_URL = 'https://evalview.com';
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 const DIST_DIR = path.resolve('dist');
 const INDEX_PATH = path.join(DIST_DIR, 'index.html');

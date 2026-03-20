@@ -83,7 +83,7 @@ const App: React.FC = () => {
         operatingSystem: 'Cross-platform',
         description:
           'Regression guardrails for agents. Generate tests, snapshot behavior, detect regressions, and gate agent changes in CI/CD.',
-        url: 'https://www.evalview.com',
+        url: 'https://evalview.com',
         downloadUrl: 'https://pypi.org/project/evalview/',
         offers: {
           '@type': 'Offer',

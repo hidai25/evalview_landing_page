@@ -16,7 +16,7 @@ EvalView is an open-source testing and regression detection framework for AI age
 
 ## Links
 
-- Homepage: https://www.evalview.com
+- Homepage: https://evalview.com
 - GitHub: https://github.com/hidai25/eval-view
 - PyPI: https://pypi.org/project/evalview/
 - Documentation: https://github.com/hidai25/eval-view#readme
@@ -85,23 +85,23 @@ LangGraph, CrewAI, OpenAI Assistants, Anthropic Claude, HuggingFace, Ollama, MCP
 
 ## Comparisons
 
-- [EvalView vs LangSmith](https://www.evalview.com/vs/langsmith)
-- [EvalView vs Langfuse](https://www.evalview.com/vs/langfuse)
-- [EvalView vs Braintrust](https://www.evalview.com/vs/braintrust)
-- [EvalView vs DeepEval](https://www.evalview.com/vs/deepeval)
+- [EvalView vs LangSmith](https://evalview.com/vs/langsmith)
+- [EvalView vs Langfuse](https://evalview.com/vs/langfuse)
+- [EvalView vs Braintrust](https://evalview.com/vs/braintrust)
+- [EvalView vs DeepEval](https://evalview.com/vs/deepeval)
 
 ## Blog
 
-- [Your AI Agent Didn't Crash. It Just Quietly Started Lying.](https://www.evalview.com/blog/your-ai-agent-didnt-crash-it-just-started-lying)
+- [Your AI Agent Didn't Crash. It Just Quietly Started Lying.](https://evalview.com/blog/your-ai-agent-didnt-crash-it-just-started-lying)
 
 ## Guides
 
-- [AI Agent Testing in CI/CD](https://www.evalview.com/ai-agent-testing-ci-cd)
-- [AI Agent Regression Testing](https://www.evalview.com/ai-agent-regression-testing)
-- [MCP Server Testing](https://www.evalview.com/mcp-server-testing)
-- [LangGraph Testing](https://www.evalview.com/langgraph-testing)
-- [Tool Calling Agent Testing](https://www.evalview.com/tool-calling-agent-testing)
+- [AI Agent Testing in CI/CD](https://evalview.com/ai-agent-testing-ci-cd)
+- [AI Agent Regression Testing](https://evalview.com/ai-agent-regression-testing)
+- [MCP Server Testing](https://evalview.com/mcp-server-testing)
+- [LangGraph Testing](https://evalview.com/langgraph-testing)
+- [Tool Calling Agent Testing](https://evalview.com/tool-calling-agent-testing)
 
 ## Optional
 
-- Full documentation: https://www.evalview.com/llms-full.txt
+- Full documentation: https://evalview.com/llms-full.txt

@@ -8,7 +8,7 @@ interface MetadataConfig {
   structuredData?: Record<string, unknown>[];
 }
 
-const SITE_URL = 'https://www.evalview.com';
+const SITE_URL = 'https://evalview.com';
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 function getOrCreateMeta(selector: string, attrs: Record<string, string>): HTMLMetaElement {
