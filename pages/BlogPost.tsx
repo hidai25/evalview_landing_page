@@ -266,13 +266,18 @@ const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
             headline: post.title,
             description: post.excerpt,
             url: post.canonicalUrl || `https://www.evalview.com/blog/${slug}`,
+            image: 'https://www.evalview.com/og-image.png',
+            datePublished: post.date,
+            dateModified: post.date,
             author: {
               '@type': 'Person',
               name: 'Hidai Bar-Mor',
+              url: 'https://x.com/Hidai_barmor',
             },
             publisher: {
               '@type': 'Organization',
               name: 'EvalView',
+              url: 'https://www.evalview.com',
               logo: {
                 '@type': 'ImageObject',
                 url: 'https://www.evalview.com/logo.png',

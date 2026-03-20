@@ -357,6 +357,8 @@ const routes = [
         description:
           'Open-source regression testing framework for AI agents. Snapshot behavior, diff tool calls, detect regressions, and block broken agents in CI/CD.',
         url: SITE_URL,
+        image: `${SITE_URL}/og-image.png`,
+        screenshot: `${SITE_URL}/og-image.png`,
         downloadUrl: 'https://pypi.org/project/evalview/',
         author: {
           '@type': 'Organization',
@@ -518,7 +520,9 @@ const routes = [
         headline: "Your AI Agent Didn't Crash. It Just Quietly Started Lying.",
         description: "The scariest agent bugs aren't the ones that throw errors. They're the ones where the agent stopped calling its tools and has been hallucinating ever since.",
         url: `${SITE_URL}/blog/your-ai-agent-didnt-crash-it-just-started-lying`,
+        image: `${SITE_URL}/og-image.png`,
         datePublished: '2026-03-11',
+        dateModified: '2026-03-11',
         author: {
           '@type': 'Person',
           name: 'Hidai Bar-Mor',
