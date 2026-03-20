@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-41Y7TMV10P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-41Y7TMV10P');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- SEO & Meta Tags -->
+    <title>EvalView vs LangSmith | AI Agent Regression Testing vs Observability</title>
+    <meta name="description" content="Compare EvalView vs LangSmith. Use LangSmith for observability and traces. Use EvalView for regression testing, golden baselines, and CI gating for AI agents.">
+    <meta name="keywords" content="AI agent testing, LLM testing framework, pytest for AI, LangGraph testing, CrewAI testing, agent evaluation, hallucination detection, AI regression testing">
+    <link rel="canonical" href="https://evalview.com/vs/langsmith">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://evalview.com/vs/langsmith">
+    <meta property="og:title" content="EvalView vs LangSmith | AI Agent Regression Testing vs Observability">
+    <meta property="og:description" content="Compare EvalView vs LangSmith. Use LangSmith for observability and traces. Use EvalView for regression testing, golden baselines, and CI gating for AI agents.">
+    <meta property="og:image" content="https://evalview.com/og-image.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EvalView vs LangSmith | AI Agent Regression Testing vs Observability">
+    <meta name="twitter:description" content="Compare EvalView vs LangSmith. Use LangSmith for observability and traces. Use EvalView for regression testing, golden baselines, and CI gating for AI agents.">
+    <meta name="twitter:image" content="https://evalview.com/og-image.png">
+
+    <!-- JSON-LD Structured Data for LLM SEO -->
+
+    <!-- LLMs.txt for AI discoverability -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt">
+
+    <!-- Favicon -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "EvalView vs LangSmith | AI Agent Regression Testing vs Observability",
+  "description": "Compare EvalView vs LangSmith. Use LangSmith for observability and traces. Use EvalView for regression testing, golden baselines, and CI gating for AI agents.",
+  "url": "https://evalview.com/vs/langsmith"
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EvalView",
+  "url": "https://evalview.com",
+  "logo": "https://evalview.com/logo.png",
+  "description": "Open-source regression testing framework for AI agents.",
+  "email": "hidai@evalview.com",
+  "sameAs": [
+    "https://github.com/hidai25/eval-view",
+    "https://pypi.org/project/evalview/",
+    "https://x.com/Hidai_barmor",
+    "https://dev.to/evalview",
+    "https://medium.com/@evalview",
+    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EvalView",
+  "url": "https://evalview.com",
+  "description": "Regression testing for AI agents. Snapshot behavior, detect regressions, block broken agents before production.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://evalview.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+    </script>
+
+    <link rel="icon" type="image/png" href="/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                blue: '#3B82F6',
+                cyan: '#06B6D4',
+                teal: '#14B8A6',
+                dark: '#020617', // Richer black
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shine': 'shine 2s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              shine: {
+                '0%': { backgroundPosition: '200% center' },
+                '100%': { backgroundPosition: '-200% center' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #000000;
+        color: #F8FAFC;
+        overflow-x: hidden;
+      }
+      
+      /* Subtle Grid Background */
+      .bg-grid {
+        background-size: 50px 50px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #60A5FA, #22D3EE, #34D399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient-move 5s ease infinite;
+      }
+
+      @keyframes gradient-move {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(6, 182, 212, 0.3); /* Cyan border on hover */
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+      }
+
+      .glass-nav {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Glow Effects */
+      .glow-spot {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #020617;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+      }
+    </style>
+  <!-- SPA redirect handler for GitHub Pages (reads ?p= set by 404.html) -->
+  <script>
+    (function() {
+      var redirect = window.location.search.slice(1);
+      if (redirect.startsWith('p=/')) {
+        var path = redirect.slice(2).split('&q=').map(function(s) {
+          return decodeURIComponent(s.replace(/~and~/g, '&'));
+        });
+        var newUrl = window.location.protocol + '//' + window.location.host +
+          path[0] + (path[1] ? '?' + path[1] : '') + window.location.hash;
+        window.history.replaceState(null, null, newUrl);
+      }
+    })();
+  </script>
+
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-gAz_BYW6.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+    <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
+    <h1>EvalView vs LangSmith</h1>
+    <p>LangSmith is strongest for observability, debugging, and the broader LangChain ecosystem. EvalView is strongest for regression testing: generate tests, snapshot behavior, diff tool paths, and block regressions in CI/CD.</p>
+    <h2>Choose LangSmith when</h2>
+    <ul>
+      <li>you want trace collection and debugging dashboards</li>
+      <li>you are already deep in LangChain or LangGraph</li>
+      <li>you want a broader platform for prompt iteration and agent development</li>
+    </ul>
+    <h2>Choose EvalView when</h2>
+    <ul>
+      <li>you need AI agent regression testing</li>
+      <li>you want golden baseline testing for agents</li>
+      <li>you care about tool-call, sequence, output, cost, and latency diffs</li>
+      <li>you want a lightweight CI gate instead of a larger platform decision</li>
+    </ul>
+    <h2>EvalView workflow</h2>
+    <pre><code>evalview generate --agent http://localhost:8000
+evalview snapshot tests/generated --approve-generated
+evalview check tests/generated</code></pre>
+    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    </div>
+    
+</body>
+</html>

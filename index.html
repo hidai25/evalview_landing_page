@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-41Y7TMV10P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-41Y7TMV10P');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- SEO & Meta Tags -->
+    <title>EvalView – pytest for AI Agents | Open Source Agent Testing Framework</title>
+    <meta name="description" content="EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.">
+    <meta name="keywords" content="AI agent testing, LLM testing framework, pytest for AI, LangGraph testing, CrewAI testing, agent evaluation, hallucination detection, AI regression testing">
+    <link rel="canonical" href="https://evalview.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://evalview.com/">
+    <meta property="og:title" content="EvalView – pytest for AI Agents | Open Source Agent Testing Framework">
+    <meta property="og:description" content="EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.">
+    <meta property="og:image" content="https://evalview.com/og-image.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EvalView – pytest for AI Agents | Open Source Agent Testing Framework">
+    <meta name="twitter:description" content="EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.">
+    <meta name="twitter:image" content="https://evalview.com/og-image.png">
+
+    <!-- JSON-LD Structured Data for LLM SEO -->
+
+    <!-- LLMs.txt for AI discoverability -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt">
+
+    <!-- Favicon -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "EvalView – pytest for AI Agents | Open Source Agent Testing Framework",
+  "description": "EvalView is an open-source testing framework that brings pytest-style workflows to AI agents. Generate tests, track regressions, and keep tool-calling agents reliable in CI/CD.",
+  "url": "https://evalview.com/"
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "EvalView",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "softwareVersion": "0.5.3",
+  "description": "Open-source regression testing framework for AI agents. Snapshot behavior, diff tool calls, detect regressions, and block broken agents in CI/CD.",
+  "url": "https://evalview.com",
+  "image": "https://evalview.com/og-image.png",
+  "screenshot": "https://evalview.com/og-image.png",
+  "downloadUrl": "https://pypi.org/project/evalview/",
+  "featureList": [
+    "Golden baseline regression detection",
+    "Tool call and parameter diffing",
+    "Multi-turn conversation testing with per-turn judge scoring",
+    "Production monitoring with Slack alerts",
+    "14 framework adapters (LangGraph, CrewAI, OpenAI, Anthropic, HuggingFace, Ollama, MCP)",
+    "Statistical testing with pass@k metrics",
+    "LLM-as-judge evaluation (GPT, Claude, Gemini, DeepSeek, Ollama)",
+    "CI/CD with GitHub Actions, PR comments, cost/model alerts",
+    "Real traffic capture via proxy",
+    "Test generation from live agents",
+    "SKILL.md validation for Claude Code and OpenAI Codex",
+    "MCP contract testing for interface drift",
+    "Works fully offline with Ollama"
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "sameAs": [
+      "https://github.com/hidai25/eval-view",
+      "https://pypi.org/project/evalview/",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      "h1",
+      "h2",
+      "[data-prerendered]"
+    ]
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is EvalView?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EvalView is an open-source regression testing framework for AI agents. It sends test queries to your agent, records everything (tool calls, parameters, sequence, output, cost, latency), and diffs against a golden baseline. Install with pip install evalview."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is EvalView different from LangSmith?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "LangSmith is for observability and tracing — it shows you what your agent did. EvalView is for testing and regression detection — it tells you whether your agent broke. They're complementary tools."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is EvalView free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. EvalView is free and open source under the Apache 2.0 license. Core regression detection works without any API keys. Use Ollama for completely free, fully offline LLM-as-judge evaluation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What frameworks does EvalView support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EvalView works with LangGraph, CrewAI, OpenAI Assistants, Anthropic Claude, HuggingFace, Ollama, MCP servers, and any HTTP API. It also supports SKILL.md validation for Claude Code and OpenAI Codex."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can EvalView run in CI/CD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. EvalView has a GitHub Action (hidai25/eval-view@v0.5.3), exit codes, JSON output, and PR comments with cost/latency/model change alerts. It works with GitHub Actions, GitLab CI, CircleCI, and any CI system that runs Python."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can EvalView handle non-deterministic LLM outputs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. EvalView provides multi-reference goldens (up to 5 variants per test), statistical mode with pass@k metrics, flexible subsequence matching, and tool categories that match by intent instead of exact names."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EvalView",
+  "url": "https://evalview.com",
+  "logo": "https://evalview.com/logo.png",
+  "description": "Open-source regression testing framework for AI agents.",
+  "email": "hidai@evalview.com",
+  "sameAs": [
+    "https://github.com/hidai25/eval-view",
+    "https://pypi.org/project/evalview/",
+    "https://x.com/Hidai_barmor",
+    "https://dev.to/evalview",
+    "https://medium.com/@evalview",
+    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EvalView",
+  "url": "https://evalview.com",
+  "description": "Regression testing for AI agents. Snapshot behavior, detect regressions, block broken agents before production.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://evalview.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+    </script>
+
+    <link rel="icon" type="image/png" href="/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                blue: '#3B82F6',
+                cyan: '#06B6D4',
+                teal: '#14B8A6',
+                dark: '#020617', // Richer black
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shine': 'shine 2s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              shine: {
+                '0%': { backgroundPosition: '200% center' },
+                '100%': { backgroundPosition: '-200% center' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #000000;
+        color: #F8FAFC;
+        overflow-x: hidden;
+      }
+      
+      /* Subtle Grid Background */
+      .bg-grid {
+        background-size: 50px 50px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #60A5FA, #22D3EE, #34D399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradient-move 5s ease infinite;
+      }
+
+      @keyframes gradient-move {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(6, 182, 212, 0.3); /* Cyan border on hover */
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+      }
+
+      .glass-nav {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Glow Effects */
+      .glow-spot {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #020617;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+      }
+    </style>
+  <!-- SPA redirect handler for GitHub Pages (reads ?p= set by 404.html) -->
+  <script>
+    (function() {
+      var redirect = window.location.search.slice(1);
+      if (redirect.startsWith('p=/')) {
+        var path = redirect.slice(2).split('&q=').map(function(s) {
+          return decodeURIComponent(s.replace(/~and~/g, '&'));
+        });
+        var newUrl = window.location.protocol + '//' + window.location.host +
+          path[0] + (path[1] ? '?' + path[1] : '') + window.location.hash;
+        window.history.replaceState(null, null, newUrl);
+      }
+    })();
+  </script>
+
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-gAz_BYW6.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+    <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
+    <h1>EvalView — Regression Testing for AI Agents</h1>
+    <p><strong>Snapshot behavior, detect regressions, block broken agents before production.</strong></p>
+    <p>EvalView sends test queries to your agent, records everything (tool calls, parameters, sequence, output, cost, latency), and diffs it against a golden baseline. When something changes, you know immediately.</p>
+    <p>Normal tests catch crashes. Tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update.</p>
+    <h2>Quick Start</h2>
+    <pre><code>pip install evalview
+evalview init        # Detect agent, create starter suite
+evalview snapshot    # Save current behavior as baseline
+evalview check       # Catch regressions after every change
+evalview demo        # See it live, no API key needed</code></pre>
+    <h2>What It Catches</h2>
+    <ul>
+      <li><strong>PASSED</strong> — Behavior matches baseline. Ship with confidence.</li>
+      <li><strong>TOOLS_CHANGED</strong> — Different tools called. Review the diff.</li>
+      <li><strong>OUTPUT_CHANGED</strong> — Same tools, output shifted. Review the diff.</li>
+      <li><strong>REGRESSION</strong> — Score dropped significantly. Fix before shipping.</li>
+    </ul>
+    <h2>Four Scoring Layers</h2>
+    <ul>
+      <li><strong>Tool calls + sequence</strong> — exact tool names, order, parameters (free)</li>
+      <li><strong>Code-based checks</strong> — regex, JSON schema, contains/not_contains (free)</li>
+      <li><strong>Semantic similarity</strong> — output meaning via embeddings (~$0.00004/test)</li>
+      <li><strong>LLM-as-judge</strong> — output quality scored by GPT, Claude, Gemini, DeepSeek, or Ollama (~$0.01/test)</li>
+    </ul>
+    <p>The first two layers alone catch most regressions — fully offline, zero cost.</p>
+    <h2>Key Features</h2>
+    <ul>
+      <li>Golden baseline regression detection with tool call and parameter diffing</li>
+      <li>Multi-turn conversation testing with per-turn judge scoring</li>
+      <li>Multi-reference baselines (up to 5 variants for non-deterministic agents)</li>
+      <li>Production monitoring with Slack alerts</li>
+      <li>Statistical testing with pass@k reliability metrics</li>
+      <li>Real traffic capture via proxy</li>
+      <li>Test generation from live agents</li>
+      <li>CI/CD with GitHub Actions, PR comments, cost/latency/model change alerts</li>
+      <li>SKILL.md validation for Claude Code and OpenAI Codex</li>
+      <li>MCP contract testing for interface drift detection</li>
+      <li>Works fully offline with Ollama</li>
+    </ul>
+    <h2>How EvalView Compares</h2>
+    <h3>vs. LangSmith</h3>
+    <p>LangSmith is for observability — it shows what your agent did. EvalView is for regression testing — it tells you whether your agent broke. They're complementary.</p>
+    <p><a href="/vs/langsmith">Read EvalView vs LangSmith comparison</a></p>
+    <h3>vs. Braintrust</h3>
+    <p>Braintrust scores agent quality. EvalView detects when behavior changes automatically through golden baseline diffing. EvalView is fully free and open source.</p>
+    <p><a href="/vs/braintrust">Read EvalView vs Braintrust comparison</a></p>
+    <h3>vs. Langfuse</h3>
+    <p>Langfuse is for LLM observability. EvalView is for regression testing with golden baselines and CI gating.</p>
+    <p><a href="/vs/langfuse">Read EvalView vs Langfuse comparison</a> | <a href="/vs/deepeval">Read EvalView vs DeepEval comparison</a></p>
+    <h2>Supported Frameworks</h2>
+    <p>Works with LangGraph, CrewAI, OpenAI Assistants, Anthropic Claude, HuggingFace, Ollama, MCP servers, and any HTTP API.</p>
+    <h2>Guides</h2>
+    <ul>
+      <li><a href="/ai-agent-testing-ci-cd">AI Agent Testing in CI/CD</a></li>
+      <li><a href="/ai-agent-regression-testing">AI Agent Regression Testing</a></li>
+      <li><a href="/mcp-server-testing">MCP Server Testing</a></li>
+      <li><a href="/langgraph-testing">LangGraph Testing in CI/CD</a></li>
+      <li><a href="/tool-calling-agent-testing">Tool-Calling Agent Testing</a></li>
+    </ul>
+    <p>Free and open source under the Apache 2.0 license.</p>
+    <p><a href="https://github.com/hidai25/eval-view">View on GitHub</a> | <a href="https://pypi.org/project/evalview/">Install from PyPI</a></p>
+    </div>
+    <noscript>
+      <div style="max-width:800px;margin:40px auto;padding:20px;font-family:system-ui,sans-serif;color:#f8fafc;background:#0d1117;line-height:1.6;">
+        <h1>EvalView — Regression Testing for AI Agents</h1>
+        <p><strong>Snapshot behavior, detect regressions, block broken agents before production.</strong></p>
+        <p>EvalView sends test queries to your agent, records everything (tool calls, parameters, sequence, output, cost, latency), and diffs it against a golden baseline. When something changes, you know immediately.</p>
+        <p>Normal tests catch crashes. Tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update.</p>
+        <h2>Quick Start</h2>
+        <pre style="background:#161b22;padding:12px;border-radius:6px;"><code>pip install evalview
+evalview init        # Detect agent, create starter suite
+evalview snapshot    # Save current behavior as baseline
+evalview check       # Catch regressions after every change</code></pre>
+        <h2>Key Features</h2>
+        <ul>
+          <li>Golden baseline regression detection with 4 statuses (PASSED, TOOLS_CHANGED, OUTPUT_CHANGED, REGRESSION)</li>
+          <li>Multi-turn conversation testing with per-turn judge scoring</li>
+          <li>Production monitoring with Slack alerts</li>
+          <li>14 framework adapters (LangGraph, CrewAI, OpenAI, Anthropic, HuggingFace, Ollama, MCP)</li>
+          <li>Statistical testing with pass@k reliability metrics</li>
+          <li>LLM-as-judge evaluation (GPT, Claude, Gemini, DeepSeek, Ollama — free)</li>
+          <li>CI/CD with GitHub Actions, PR comments, cost/latency/model alerts</li>
+          <li>Real traffic capture via proxy</li>
+          <li>Test generation from live agents</li>
+          <li>SKILL.md validation for Claude Code and OpenAI Codex</li>
+          <li>MCP contract testing for interface drift detection</li>
+          <li>Works fully offline with Ollama</li>
+        </ul>
+        <h2>How EvalView Compares</h2>
+        <p><strong>LangSmith</strong> is for observability — it shows what your agent did. <strong>EvalView</strong> is for regression testing — it tells you whether your agent broke. They're complementary.</p>
+        <p><strong>Braintrust</strong> scores agent quality. <strong>EvalView</strong> detects when behavior changes automatically through golden baseline diffing.</p>
+        <h2>Supported Frameworks</h2>
+        <p>LangGraph, CrewAI, OpenAI Assistants, Anthropic Claude, HuggingFace, Ollama, MCP servers, and any HTTP API.</p>
+        <h2>Free and Open Source</h2>
+        <p>Apache 2.0 license. Core regression detection works without any API keys. Use Ollama for completely free, fully offline evaluation.</p>
+        <p><a href="https://github.com/hidai25/eval-view" style="color:#22d3ee;">GitHub</a> | <a href="https://pypi.org/project/evalview/" style="color:#22d3ee;">PyPI</a> | <a href="https://github.com/hidai25/eval-view#readme" style="color:#22d3ee;">Documentation</a></p>
+      </div>
+    </noscript>
+</body>
+</html>

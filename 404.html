@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>EvalView</title>
+    <script>
+      // Single-Page Apps for GitHub Pages
+      // Redirect all 404s back to index.html while preserving the path.
+      // https://github.com/rafgraph/spa-github-pages
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
