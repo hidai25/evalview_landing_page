@@ -88,19 +88,34 @@ evalview demo        # See it live, no API key needed</code></pre>
 
   '/vs/langsmith': `
     <h1>EvalView vs LangSmith</h1>
-    <p>LangSmith is strongest for observability, debugging, and the broader LangChain ecosystem. EvalView is strongest for regression testing: generate tests, snapshot behavior, diff tool paths, and block regressions in CI/CD.</p>
+    <p>If you are comparing EvalView vs LangSmith, the key distinction is simple: LangSmith is strongest for agent observability, debugging, prompt workflows, and the broader LangChain/LangGraph ecosystem. EvalView is strongest for regression testing: generate tests, snapshot agent behavior, diff tool paths, and block regressions in CI/CD.</p>
     <h2>Choose LangSmith when</h2>
     <ul>
-      <li>you want trace collection and debugging dashboards</li>
-      <li>you are already deep in LangChain or LangGraph</li>
-      <li>you want a broader platform for prompt iteration and agent development</li>
+      <li>you want trace collection and debugging dashboards for LLM calls</li>
+      <li>you are already deep in LangChain or LangGraph and want tight integration</li>
+      <li>you want a broader platform for prompt iteration, dataset management, and agent development</li>
+      <li>you need production monitoring with trace-level visibility into every LLM call</li>
     </ul>
     <h2>Choose EvalView when</h2>
     <ul>
-      <li>you need AI agent regression testing</li>
-      <li>you want golden baseline testing for agents</li>
-      <li>you care about tool-call, sequence, output, cost, and latency diffs</li>
-      <li>you want a lightweight CI gate instead of a larger platform decision</li>
+      <li>you need AI agent regression testing that catches silent behavior changes</li>
+      <li>you want golden baseline testing — snapshot known-good behavior and diff against it</li>
+      <li>you care about tool-call, sequence, output, cost, and latency diffs in a single report</li>
+      <li>you want to generate a draft test suite from just an endpoint URL or traffic logs</li>
+      <li>you want a lightweight CI gate that blocks broken agents before merge</li>
+    </ul>
+    <h2>Best fit together</h2>
+    <p>Many teams use both tools. LangSmith handles observability and development traces — showing you what your agent did in production. EvalView handles regression gating — telling you whether your agent broke before it reaches production. They solve different problems in the agent lifecycle.</p>
+    <h2>Key difference: observability vs testing</h2>
+    <p>LangSmith answers "what happened?" after the fact. EvalView answers "did anything change?" before you ship. Normal tests catch crashes and tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 OK but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update.</p>
+    <h2>Feature comparison</h2>
+    <ul>
+      <li><strong>Golden baseline diffing</strong> — EvalView: Yes (core feature). LangSmith: No.</li>
+      <li><strong>Tool-call and sequence regression detection</strong> — EvalView: Yes. LangSmith: No (traces only).</li>
+      <li><strong>PR comments with regression alerts</strong> — EvalView: Yes. LangSmith: No.</li>
+      <li><strong>Test generation from a live agent</strong> — EvalView: Yes. LangSmith: No.</li>
+      <li><strong>Fully offline operation</strong> — EvalView: Yes (with Ollama). LangSmith: No (cloud-only).</li>
+      <li><strong>Production trace observability</strong> — EvalView: No. LangSmith: Yes (core feature).</li>
     </ul>
     <h2>EvalView workflow</h2>
     <pre><code>evalview generate --agent http://localhost:8000
@@ -164,112 +179,270 @@ evalview check tests/generated</code></pre>
 
   '/ai-agent-testing-ci-cd': `
     <h1>AI Agent Testing in CI/CD</h1>
-    <p>If you are looking for AI agent testing in CI/CD, the practical problem is not just "does the output look okay?" It is "did my agent behavior change in a way that should block this merge?" EvalView is built for that workflow.</p>
+    <p>The practical problem with AI agent testing in CI/CD is not just "does the output look okay?" It is "did my agent behavior change in a way that should block this merge?" EvalView is built for that workflow — it integrates with GitHub Actions, posts PR comments with regression alerts, and provides proper exit codes for CI gating.</p>
     <h2>What EvalView tests in CI</h2>
+    <p>Every CI run checks six dimensions of agent behavior against the approved golden baseline:</p>
     <ul>
-      <li>tool calls</li>
-      <li>tool sequence</li>
-      <li>output drift</li>
-      <li>cost changes</li>
-      <li>latency changes</li>
-      <li>safety contracts like forbidden_tools</li>
+      <li><strong>tool calls</strong> — did the agent call the right tools?</li>
+      <li><strong>tool sequence</strong> — did it call them in the right order?</li>
+      <li><strong>output drift</strong> — did the response quality degrade?</li>
+      <li><strong>cost changes</strong> — did token usage or API costs spike?</li>
+      <li><strong>latency changes</strong> — did the agent slow down significantly?</li>
+      <li><strong>safety contracts</strong> — did the agent use forbidden tools?</li>
     </ul>
-    <h2>Recommended workflow</h2>
-    <pre><code>evalview generate --agent http://localhost:8000
-evalview snapshot tests/generated --approve-generated
-evalview check --json --fail-on REGRESSION
-evalview ci comment --results tests/generated/generated.report.json</code></pre>
-    <h2>Works especially well for</h2>
+    <h2>GitHub Actions setup</h2>
+    <p>Add this workflow to your repository. It runs regression checks on every PR and push to main:</p>
+    <pre><code># .github/workflows/evalview.yml
+name: EvalView Regression Check
+on: [pull_request, push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for regressions
+        uses: hidai25/eval-view@v0.6.0
+        with:
+          openai-api-key: $\{{ secrets.OPENAI_API_KEY }}
+          fail-on: REGRESSION</code></pre>
+    <h2>What PR comments show</h2>
+    <p>When EvalView detects changes, it posts a detailed PR comment with cost spike alerts, latency spike alerts, model change detection, and a collapsible diff of all behavior changes. On clean runs it shows a simple PASSED summary. Comments are deduplicated — EvalView updates its existing comment instead of creating new ones on each push.</p>
+    <h2>CI exit codes</h2>
+    <p>EvalView provides proper exit codes for CI gating. Exit 0 means all tests passed. Exit 1 means regressions detected. The --fail-on flag controls which statuses block the pipeline:</p>
+    <pre><code># Only fail on score regressions (default)
+evalview check --fail-on REGRESSION
+
+# Also fail on tool changes
+evalview check --fail-on REGRESSION,TOOLS_CHANGED
+
+# Fail on any change (strictest)
+evalview check --strict</code></pre>
+    <h2>Pre-push hooks</h2>
+    <p>If you want regression blocking without CI setup, EvalView supports Git pre-push hooks:</p>
+    <pre><code>evalview install-hooks    # Pre-push regression blocking</code></pre>
+    <h2>Works with any CI system</h2>
     <ul>
-      <li>LangGraph agents</li>
-      <li>MCP servers and MCP-based agents</li>
-      <li>generic HTTP agents</li>
-      <li>tool-calling assistants</li>
-      <li>teams shipping agent changes through GitHub Actions</li>
+      <li><strong>GitHub Actions</strong> — dedicated action with PR comments and job summaries</li>
+      <li><strong>GitLab CI</strong> — use pip install evalview in your .gitlab-ci.yml</li>
+      <li><strong>CircleCI</strong> — add evalview check as a test step</li>
+      <li><strong>Any CI</strong> — EvalView is CLI-first, so it works anywhere Python runs</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>`,
+    <p><a href="/ai-agent-regression-testing">AI Agent Regression Testing Guide</a> | <a href="/langgraph-testing">LangGraph Testing Guide</a> | <a href="/">Back to EvalView homepage</a></p>`,
 
   '/ai-agent-regression-testing': `
     <h1>AI Agent Regression Testing</h1>
-    <p>Regression testing for AI agents is not just output scoring. It is verifying that tool use, turn sequence, safety boundaries, latency, and cost still behave the way your team approved.</p>
+    <p>Regression testing for AI agents is not just output scoring. It is verifying that tool use, turn sequence, safety boundaries, latency, and cost still behave the way your team approved. The hardest bugs are silent — the agent returns 200 OK but takes a completely different tool path.</p>
     <h2>What should be regression-tested</h2>
+    <p>AI agent regression testing covers five critical dimensions that traditional tests miss:</p>
     <ul>
-      <li>tool usage and tool order</li>
-      <li>multi-turn clarification flows</li>
-      <li>refusal and safety behavior</li>
-      <li>cost and latency drift</li>
-      <li>final output shape for user-visible responses</li>
+      <li><strong>tool usage and tool order</strong> — did the agent call lookup_order before process_refund?</li>
+      <li><strong>multi-turn clarification flows</strong> — did the agent ask for the order number before acting?</li>
+      <li><strong>refusal and safety behavior</strong> — did the agent refuse to delete data without confirmation?</li>
+      <li><strong>cost and latency drift</strong> — did token usage spike after a model swap?</li>
+      <li><strong>final output shape</strong> — did the user-visible response degrade in quality?</li>
     </ul>
-    <h2>Why EvalView fits this workflow</h2>
+    <h2>How golden baseline testing works</h2>
+    <p>EvalView captures a snapshot of known-good agent behavior and automatically detects when future runs deviate. The first two scoring layers work without LLM-as-judge or API keys — pure deterministic tool-call and sequence comparison.</p>
+    <pre><code># 1. Save current behavior as baseline
+evalview snapshot
+
+# 2. Make changes to your agent (prompt, model, tools)
+
+# 3. Check for regressions
+evalview check</code></pre>
+    <h2>Four regression statuses</h2>
     <ul>
-      <li>golden baseline testing for agents</li>
-      <li>draft suite generation from a URL or logs</li>
-      <li>approval-gated snapshots before locking in expectations</li>
-      <li>CI comments that surface behavior changes in pull requests</li>
+      <li><strong>PASSED</strong> — behavior matches the golden baseline. Ship with confidence.</li>
+      <li><strong>TOOLS_CHANGED</strong> — the agent called different tools. Review the diff before deploying.</li>
+      <li><strong>OUTPUT_CHANGED</strong> — same tools but different output. Review the diff.</li>
+      <li><strong>REGRESSION</strong> — score dropped significantly. Fix before shipping.</li>
     </ul>
-    <h2>Recommended commands</h2>
-    <pre><code>evalview generate --agent http://localhost:8000
-evalview snapshot tests/generated --approve-generated
-evalview check tests/generated</code></pre>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>`,
+    <h2>Example regression output</h2>
+    <pre><code>  ✓ login-flow           PASSED
+  ⚠ refund-request       TOOLS_CHANGED
+      - lookup_order → check_policy → process_refund
+      + lookup_order → check_policy → process_refund → escalate_to_human
+  ✗ billing-dispute      REGRESSION  -30 pts
+      Score: 85 → 55  Output similarity: 35%</code></pre>
+    <h2>Configurable strictness</h2>
+    <pre><code># Default: fail only on score regressions
+evalview check --fail-on REGRESSION
+
+# Stricter: also fail on tool changes
+evalview check --fail-on REGRESSION,TOOLS_CHANGED
+
+# Strictest: fail on any change
+evalview check --strict</code></pre>
+    <h2>Why this matters</h2>
+    <p>Normal tests catch crashes. Tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update. These silent regressions are the most dangerous because they look fine in logs but produce wrong results for users.</p>
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/tool-calling-agent-testing">Tool-Calling Agent Testing</a> | <a href="/">Back to EvalView homepage</a></p>`,
 
   '/mcp-server-testing': `
     <h1>MCP Server Testing</h1>
-    <p>MCP servers introduce a clean tool contract, but that does not remove regression risk. You still need tests for tool discovery, tool choice, argument shape, safety boundaries, and multi-step behavior.</p>
-    <h2>What teams need to catch</h2>
+    <p>When your AI agent depends on external MCP servers you do not control, those servers can change their tool definitions at any time — rename parameters, remove tools, add required fields. Your agent tests pass today and fail tomorrow. EvalView solves this with MCP contract testing.</p>
+    <h2>The problem with external MCP servers</h2>
+    <p>MCP servers introduce a clean tool contract, but that does not remove regression risk. When a server you depend on changes its interface, your agent breaks silently. Your tests still pass because your code did not change — but the server did.</p>
+    <h2>MCP contract testing</h2>
+    <p>EvalView captures a snapshot of a server's tool definitions and diffs against it on every CI run. If the interface changed, you know immediately — before running your full test suite.</p>
+    <pre><code># 1. Snapshot a server's tool contract
+evalview mcp snapshot "npx:@modelcontextprotocol/server-github" --name server-github
+
+# 2. Check for interface drift
+evalview mcp check server-github
+
+# 3. Use in CI to abort before testing against broken interfaces
+evalview run tests/ --contracts --fail-on "REGRESSION,CONTRACT_DRIFT"</code></pre>
+    <h2>What contract drift looks like</h2>
+    <pre><code>CONTRACT_DRIFT - 2 breaking change(s)
+  REMOVED: create_pull_request - tool no longer available
+  CHANGED: list_issues - new required parameter 'owner'</code></pre>
+    <h2>Supported transport types</h2>
     <ul>
-      <li>wrong tool selection</li>
-      <li>tool argument drift</li>
-      <li>forbidden tool usage in sensitive scenarios</li>
-      <li>clarification turns before tool execution</li>
-      <li>behavior changes after tool or prompt updates</li>
+      <li><strong>stdio</strong> — npx:@modelcontextprotocol/server-filesystem /tmp</li>
+      <li><strong>HTTP</strong> — http://localhost:8080</li>
+      <li><strong>Command</strong> — stdio:python my_server.py</li>
     </ul>
-    <h2>Why EvalView is a good fit</h2>
+    <h2>Agent behavior testing for MCP</h2>
+    <p>Beyond contract testing, EvalView also tests the agent that uses MCP servers:</p>
     <ul>
-      <li>MCP-aware discovery for generation</li>
-      <li>tool-path clustering into draft tests</li>
-      <li>forbidden_tools contracts for safety-sensitive flows</li>
-      <li>CI-friendly regression checks for MCP agents</li>
+      <li><strong>wrong tool selection</strong> — did the agent pick the right MCP tool?</li>
+      <li><strong>tool argument drift</strong> — did the agent pass the correct parameters?</li>
+      <li><strong>forbidden tool usage</strong> — did the agent use a dangerous tool in a sensitive scenario?</li>
+      <li><strong>clarification turns</strong> — did the agent ask for missing info before calling a tool?</li>
+      <li><strong>behavior changes after server updates</strong> — did a server update break your agent flow?</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>`,
+    <h2>CLI reference</h2>
+    <pre><code>evalview mcp snapshot &lt;endpoint&gt; --name &lt;name&gt;   # Capture contract
+evalview mcp check &lt;name&gt;                         # Check for drift
+evalview mcp list                                  # List contracts
+evalview mcp show &lt;name&gt;                          # Show details
+evalview mcp delete &lt;name&gt;                        # Remove contract</code></pre>
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/tool-calling-agent-testing">Tool-Calling Agent Testing</a> | <a href="/">Back to EvalView homepage</a></p>`,
 
   '/langgraph-testing': `
     <h1>LangGraph Testing in CI/CD</h1>
-    <p>LangGraph gives you stateful agent flows, but you still need a reliable way to verify graph behavior after prompt, model, tool, or node changes. EvalView gives you that regression loop.</p>
-    <h2>What matters for LangGraph</h2>
+    <p>LangGraph gives you stateful agent flows with graph-based orchestration, but you still need a reliable way to verify graph behavior after prompt, model, tool, or node changes. EvalView provides that regression loop with a dedicated LangGraph adapter featuring auto-detection, streaming support, and native thread tracking.</p>
+    <h2>What matters for LangGraph agents</h2>
+    <p>LangGraph agents have unique testing needs beyond simple input/output checks:</p>
     <ul>
-      <li>state-driven multi-turn flows</li>
-      <li>tool-node selection and sequence</li>
-      <li>branching behavior and fallbacks</li>
-      <li>user-visible output regressions</li>
-      <li>cost and latency changes by run path</li>
+      <li><strong>state-driven multi-turn flows</strong> — does the graph handle conversation state correctly?</li>
+      <li><strong>tool-node selection and sequence</strong> — does the agent route to the right nodes?</li>
+      <li><strong>branching behavior and fallbacks</strong> — do conditional edges fire correctly?</li>
+      <li><strong>user-visible output regressions</strong> — does the final response degrade?</li>
+      <li><strong>cost and latency changes by run path</strong> — does a specific graph path cost more after changes?</li>
     </ul>
-    <h2>Recommended workflow</h2>
+    <h2>Quick start with LangGraph</h2>
+    <p>EvalView auto-detects LangGraph agents. Start your agent server, then connect and test:</p>
+    <pre><code># Start your LangGraph agent
+uvicorn main:app --reload --port 8000
+
+# Connect EvalView (auto-detects LangGraph)
+evalview connect --endpoint http://localhost:8000/api/chat
+
+# Generate tests from the running agent
+evalview generate
+
+# Snapshot approved behavior
+evalview snapshot tests/generated --approve-generated
+
+# Check for regressions
+evalview check tests/generated</code></pre>
+    <h2>CI integration for LangGraph</h2>
+    <p>Add regression checks to your CI pipeline so every PR is validated:</p>
+    <pre><code>- name: Check for regressions
+  uses: hidai25/eval-view@v0.6.0
+  with:
+    openai-api-key: $\{{ secrets.OPENAI_API_KEY }}
+    fail-on: REGRESSION</code></pre>
+    <h2>Multi-turn test cases for LangGraph</h2>
+    <p>Multi-turn tests are especially useful for LangGraph because they verify state management across conversation turns:</p>
+    <pre><code>name: refund-needs-order-number
+turns:
+  - query: "I want a refund"
+    expected:
+      output:
+        contains: ["order number"]
+  - query: "Order 4812"
+    expected:
+      tools: ["lookup_order", "check_policy"]
+      forbidden_tools: ["delete_order"]
+      output:
+        contains: ["refund", "processed"]</code></pre>
+    <h2>Troubleshooting</h2>
     <ul>
-      <li>generate a draft suite from the running agent</li>
-      <li>review and approve snapshots</li>
-      <li>run regression checks in GitHub Actions on every pull request</li>
+      <li><strong>"Cannot connect to agent"</strong> — verify your server is running with curl and check the endpoint path</li>
+      <li><strong>"Wrong endpoint"</strong> — update .evalview/config.yaml with the correct URL</li>
+      <li><strong>"Tool names don't match"</strong> — run with --verbose to see actual API responses, then update YAML files</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>`,
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/ai-agent-regression-testing">Regression Testing Guide</a> | <a href="/">Back to EvalView homepage</a></p>`,
 
   '/tool-calling-agent-testing': `
     <h1>Tool-Calling Agent Testing</h1>
-    <p>The hardest agent bugs are often not in the final text. They are in the hidden trajectory: wrong tool, wrong order, missing clarification, or dangerous tool use in the wrong scenario.</p>
-    <h2>What to assert</h2>
+    <p>The hardest agent bugs are not in the final text. They are in the hidden trajectory: wrong tool, wrong order, missing clarification, or dangerous tool use in the wrong scenario. EvalView tests the execution path, not just the output.</p>
+    <h2>What to assert in tool-calling agents</h2>
     <ul>
-      <li>tool presence</li>
-      <li>tool sequence</li>
-      <li>forbidden tool usage</li>
-      <li>clarification before action</li>
-      <li>output checks only when the wording is stable enough to matter</li>
+      <li><strong>tool presence</strong> — did the agent call the expected tools?</li>
+      <li><strong>tool sequence</strong> — did it call them in the right order?</li>
+      <li><strong>forbidden tool usage</strong> — did the agent avoid dangerous tools in sensitive scenarios?</li>
+      <li><strong>clarification before action</strong> — did the agent ask for missing info before executing?</li>
+      <li><strong>output quality</strong> — did the final response make sense given the tools called?</li>
     </ul>
-    <h2>How EvalView helps</h2>
+    <h2>Tool categories for flexible matching</h2>
+    <p>Different agents use different tool names for the same action. EvalView's tool categories let you test by intent instead of exact tool name:</p>
+    <pre><code># Brittle — fails if agent uses a different tool name
+expected:
+  tools:
+    - read_file
+
+# Flexible — passes for read_file, bash cat, text_editor, etc.
+expected:
+  categories:
+    - file_read</code></pre>
+    <h2>Built-in tool categories</h2>
     <ul>
-      <li>clusters behavior by tool path instead of treating every phrasing variation as a new test</li>
-      <li>generates native YAML tests from live probing or logs</li>
-      <li>turns approved behavior into a regression gate in CI/CD</li>
+      <li><strong>file_read</strong> — matches read_file, bash, text_editor, cat, view</li>
+      <li><strong>file_write</strong> — matches write_file, bash, text_editor, edit_file</li>
+      <li><strong>file_list</strong> — matches list_directory, bash, ls, find</li>
+      <li><strong>search</strong> — matches grep, ripgrep, bash, search_files</li>
+      <li><strong>shell</strong> — matches bash, shell, terminal, execute</li>
+      <li><strong>web</strong> — matches web_search, browse, fetch_url, curl</li>
+      <li><strong>git</strong> — matches git, bash, git_commit, git_push</li>
+      <li><strong>python</strong> — matches python, bash, python_repl, execute_python</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>`,
+    <h2>Custom categories</h2>
+    <pre><code># .evalview/config.yaml
+tool_categories:
+  database:
+    - postgres_query
+    - mysql_execute
+    - sql_run
+  my_custom_api:
+    - internal_api_call
+    - legacy_endpoint</code></pre>
+    <h2>Multi-turn testing</h2>
+    <p>Many tool-calling agents require multi-turn conversations. EvalView evaluates each turn independently while giving the LLM judge full conversation context:</p>
+    <pre><code>name: support-escalation
+turns:
+  - query: "My order is wrong"
+    expected:
+      tools: ["lookup_order"]
+      output:
+        contains: ["order number"]
+  - query: "Order 4812"
+    expected:
+      tools: ["lookup_order", "check_policy"]
+      forbidden_tools: ["delete_order", "issue_refund"]</code></pre>
+    <h2>Generating tests from a live agent</h2>
+    <pre><code># Generate from a running agent
+evalview generate --agent http://localhost:8000
+
+# Generate from traffic logs
+evalview generate --from-log traffic.jsonl
+
+# Capture a real conversation as a test
+evalview capture --agent http://localhost:8000/invoke --multi-turn</code></pre>
+    <p><a href="/ai-agent-regression-testing">Regression Testing Guide</a> | <a href="/mcp-server-testing">MCP Server Testing</a> | <a href="/">Back to EvalView homepage</a></p>`,
 
   '/blog/your-ai-agent-didnt-crash-it-just-started-lying': `
     <article>
