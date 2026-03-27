@@ -42,8 +42,17 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
 # Sitemap
 Sitemap: https://evalview.com/sitemap.xml
 
 # AI-readable documentation (https://llmstxt.org)
-# llms.txt: https://evalview.com/llms.txt
+llms.txt: https://evalview.com/llms.txt

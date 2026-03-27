@@ -588,10 +588,14 @@ const globalSchemas = [
       'https://github.com/hidai25/eval-view',
       'https://pypi.org/project/evalview/',
       'https://x.com/Hidai_barmor',
-      'https://dev.to/evalview',
-      'https://medium.com/@evalview',
-      'https://glama.ai/mcp/servers/@hidai25/evalview-mcp',
     ],
+    founder: {
+      '@type': 'Person',
+      name: 'Hidai Bar-Mor',
+      url: 'https://x.com/Hidai_barmor',
+      sameAs: ['https://github.com/hidai25', 'https://x.com/Hidai_barmor'],
+    },
+    foundingDate: '2025',
   },
   {
     '@context': 'https://schema.org',
@@ -607,6 +611,73 @@ const globalSchemas = [
   },
 ];
 
+function buildBreadcrumb(route) {
+  const parts = route.path.split('/').filter(Boolean);
+  if (parts.length === 0) return null;
+
+  const items = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+  ];
+
+  if (parts[0] === 'vs') {
+    items.push({ '@type': 'ListItem', position: 2, name: 'Comparisons', item: `${SITE_URL}/vs` });
+    items.push({ '@type': 'ListItem', position: 3, name: route.title.split(' | ')[0] });
+  } else if (parts[0] === 'blog') {
+    items.push({ '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` });
+    if (parts.length > 1) {
+      items.push({ '@type': 'ListItem', position: 3, name: route.title.split(' | ')[0] });
+    }
+  } else if (['privacy', 'terms'].includes(parts[0])) {
+    items.push({ '@type': 'ListItem', position: 2, name: route.title.split(' | ')[0] });
+  } else {
+    items.push({ '@type': 'ListItem', position: 2, name: 'Guides', item: `${SITE_URL}/blog` });
+    items.push({ '@type': 'ListItem', position: 3, name: route.title.split(' | ')[0] });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items,
+  };
+}
+
+function buildArticleSchema(route) {
+  // Add Article schema to guide pages (comparison pages and guides)
+  const guidePaths = [
+    '/ai-agent-testing-ci-cd',
+    '/ai-agent-regression-testing',
+    '/mcp-server-testing',
+    '/langgraph-testing',
+    '/tool-calling-agent-testing',
+  ];
+  const comparisonPaths = ['/vs/langsmith', '/vs/langfuse', '/vs/braintrust', '/vs/deepeval'];
+
+  if (!guidePaths.includes(route.path) && !comparisonPaths.includes(route.path)) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: route.title.split(' | ')[0],
+    description: route.description,
+    url: `${SITE_URL}${route.path}`,
+    image: OG_IMAGE,
+    datePublished: '2026-03-01',
+    dateModified: '2026-03-28',
+    author: {
+      '@type': 'Person',
+      name: 'Hidai Bar-Mor',
+      url: 'https://x.com/Hidai_barmor',
+      sameAs: ['https://github.com/hidai25', 'https://x.com/Hidai_barmor'],
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'EvalView',
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo.png`,
+    },
+  };
+}
+
 function buildStructuredData(route) {
   const url = `${SITE_URL}${route.path}`;
   const webpage = {
@@ -616,7 +687,20 @@ function buildStructuredData(route) {
     description: route.description,
     url,
   };
-  return [webpage, ...(route.structuredData || []), ...globalSchemas]
+
+  const schemas = [webpage, ...(route.structuredData || [])];
+
+  // Add BreadcrumbList for subpages
+  const breadcrumb = buildBreadcrumb(route);
+  if (breadcrumb) schemas.push(breadcrumb);
+
+  // Add Article schema for guide/comparison pages
+  const article = buildArticleSchema(route);
+  if (article) schemas.push(article);
+
+  schemas.push(...globalSchemas);
+
+  return schemas
     .map(
       (schema) =>
         `    <script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n    </script>`
