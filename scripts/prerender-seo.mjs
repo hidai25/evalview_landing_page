@@ -353,7 +353,7 @@ const routes = [
         name: 'EvalView',
         applicationCategory: 'DeveloperApplication',
         operatingSystem: 'Cross-platform',
-        softwareVersion: '0.5.3',
+        softwareVersion: '0.6.0',
         description:
           'Open-source regression testing framework for AI agents. Snapshot behavior, diff tool calls, detect regressions, and block broken agents in CI/CD.',
         url: SITE_URL,
