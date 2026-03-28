@@ -13,7 +13,11 @@ const RouterContext = createContext<RouterContextType>({
 export const useNavigation = () => useContext(RouterContext);
 
 export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [path, setPath] = useState(() => window.location.pathname);
+  const [path, setPath] = useState(() => {
+    const p = window.location.pathname;
+    // Normalize trailing slash so /privacy/ matches /privacy
+    return p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p;
+  });
 
   const navigate = (newPath: string) => {
     window.history.pushState({}, '', newPath);
@@ -22,7 +26,10 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   useEffect(() => {
-    const handlePopState = () => setPath(window.location.pathname);
+    const handlePopState = () => {
+      const p = window.location.pathname;
+      setPath(p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p);
+    };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);

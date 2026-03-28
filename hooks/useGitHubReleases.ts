@@ -23,7 +23,7 @@ export interface ParsedRelease {
   other: string[];
 }
 
-const GITHUB_REPO = 'hidai25/EvalView';
+const GITHUB_REPO = 'hidai25/eval-view';
 const PYPI_PACKAGE = 'evalview';
 const CACHE_KEY = 'evalview_github_releases';
 const CACHE_KEY_REPO = 'evalview_github_repo';

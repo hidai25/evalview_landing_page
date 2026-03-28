@@ -140,7 +140,7 @@ const App: React.FC = () => {
             >
               Blog
             </button>
-            <a href="https://github.com/hidai25/EvalView" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            <a href="https://github.com/hidai25/eval-view" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
               <Github className="w-4 h-4" />
               <span className="hidden sm:inline">GitHub</span>
               {starCount > 0 && (
@@ -207,7 +207,7 @@ const App: React.FC = () => {
                   </button>
                   
                   <a
-                    href="https://github.com/hidai25/EvalView"
+                    href="https://github.com/hidai25/eval-view"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 bg-white text-black hover:bg-slate-200 px-6 py-3 rounded-lg font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)]"
@@ -994,7 +994,7 @@ const App: React.FC = () => {
                 <div className="relative pl-8 md:pl-20 pb-12">
                   <div className="absolute left-0 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-600 border-4 border-black" />
                   <div className="glass-card rounded-2xl p-6 md:p-8 text-center">
-                    <p className="text-slate-400">No releases found. Check out our <a href="https://github.com/hidai25/EvalView/releases" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">GitHub releases page</a>.</p>
+                    <p className="text-slate-400">No releases found. Check out our <a href="https://github.com/hidai25/eval-view/releases" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">GitHub releases page</a>.</p>
                   </div>
                 </div>
               )}
@@ -1021,8 +1021,8 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-8 text-sm text-slate-500">
-            <a href="https://github.com/hidai25/EvalView" className="hover:text-white transition-colors">GitHub</a>
-            <a href="https://github.com/hidai25/EvalView#readme" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a>
+            <a href="https://github.com/hidai25/eval-view" className="hover:text-white transition-colors">GitHub</a>
+            <a href="https://github.com/hidai25/eval-view#readme" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a>
             <button onClick={() => scrollToSection('changelog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Changelog</button>
             <a href="https://x.com/Hidai_barmor" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
           </div>
