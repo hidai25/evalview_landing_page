@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://evalview.com/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Tool-Calling Agent Testing"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Tool-Calling Agent Testing",
+  "description": "Tool-calling agent testing with EvalView. Validate tool selection, tool order, safety contracts, and output regressions for multi-step AI agents.",
+  "url": "https://evalview.com/tool-calling-agent-testing",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,28 +288,76 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>Tool-Calling Agent Testing</h1>
-    <p>The hardest agent bugs are often not in the final text. They are in the hidden trajectory: wrong tool, wrong order, missing clarification, or dangerous tool use in the wrong scenario.</p>
-    <h2>What to assert</h2>
+    <p>The hardest agent bugs are not in the final text. They are in the hidden trajectory: wrong tool, wrong order, missing clarification, or dangerous tool use in the wrong scenario. EvalView tests the execution path, not just the output.</p>
+    <h2>What to assert in tool-calling agents</h2>
     <ul>
-      <li>tool presence</li>
-      <li>tool sequence</li>
-      <li>forbidden tool usage</li>
-      <li>clarification before action</li>
-      <li>output checks only when the wording is stable enough to matter</li>
+      <li><strong>tool presence</strong> — did the agent call the expected tools?</li>
+      <li><strong>tool sequence</strong> — did it call them in the right order?</li>
+      <li><strong>forbidden tool usage</strong> — did the agent avoid dangerous tools in sensitive scenarios?</li>
+      <li><strong>clarification before action</strong> — did the agent ask for missing info before executing?</li>
+      <li><strong>output quality</strong> — did the final response make sense given the tools called?</li>
     </ul>
-    <h2>How EvalView helps</h2>
+    <h2>Tool categories for flexible matching</h2>
+    <p>Different agents use different tool names for the same action. EvalView's tool categories let you test by intent instead of exact tool name:</p>
+    <pre><code># Brittle — fails if agent uses a different tool name
+expected:
+  tools:
+    - read_file
+
+# Flexible — passes for read_file, bash cat, text_editor, etc.
+expected:
+  categories:
+    - file_read</code></pre>
+    <h2>Built-in tool categories</h2>
     <ul>
-      <li>clusters behavior by tool path instead of treating every phrasing variation as a new test</li>
-      <li>generates native YAML tests from live probing or logs</li>
-      <li>turns approved behavior into a regression gate in CI/CD</li>
+      <li><strong>file_read</strong> — matches read_file, bash, text_editor, cat, view</li>
+      <li><strong>file_write</strong> — matches write_file, bash, text_editor, edit_file</li>
+      <li><strong>file_list</strong> — matches list_directory, bash, ls, find</li>
+      <li><strong>search</strong> — matches grep, ripgrep, bash, search_files</li>
+      <li><strong>shell</strong> — matches bash, shell, terminal, execute</li>
+      <li><strong>web</strong> — matches web_search, browse, fetch_url, curl</li>
+      <li><strong>git</strong> — matches git, bash, git_commit, git_push</li>
+      <li><strong>python</strong> — matches python, bash, python_repl, execute_python</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    <h2>Custom categories</h2>
+    <pre><code># .evalview/config.yaml
+tool_categories:
+  database:
+    - postgres_query
+    - mysql_execute
+    - sql_run
+  my_custom_api:
+    - internal_api_call
+    - legacy_endpoint</code></pre>
+    <h2>Multi-turn testing</h2>
+    <p>Many tool-calling agents require multi-turn conversations. EvalView evaluates each turn independently while giving the LLM judge full conversation context:</p>
+    <pre><code>name: support-escalation
+turns:
+  - query: "My order is wrong"
+    expected:
+      tools: ["lookup_order"]
+      output:
+        contains: ["order number"]
+  - query: "Order 4812"
+    expected:
+      tools: ["lookup_order", "check_policy"]
+      forbidden_tools: ["delete_order", "issue_refund"]</code></pre>
+    <h2>Generating tests from a live agent</h2>
+    <pre><code># Generate from a running agent
+evalview generate --agent http://localhost:8000
+
+# Generate from traffic logs
+evalview generate --from-log traffic.jsonl
+
+# Capture a real conversation as a test
+evalview capture --agent http://localhost:8000/invoke --multi-turn</code></pre>
+    <p><a href="/ai-agent-regression-testing">Regression Testing Guide</a> | <a href="/mcp-server-testing">MCP Server Testing</a> | <a href="/">Back to EvalView homepage</a></p>
     </div>
     
 </body>

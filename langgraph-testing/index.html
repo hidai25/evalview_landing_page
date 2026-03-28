@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://evalview.com/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "LangGraph Testing in CI/CD"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "LangGraph Testing in CI/CD",
+  "description": "Test LangGraph agents in CI/CD with EvalView. Generate draft suites, snapshot behavior, and catch graph, tool, and trajectory regressions before merge.",
+  "url": "https://evalview.com/langgraph-testing",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,28 +288,66 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>LangGraph Testing in CI/CD</h1>
-    <p>LangGraph gives you stateful agent flows, but you still need a reliable way to verify graph behavior after prompt, model, tool, or node changes. EvalView gives you that regression loop.</p>
-    <h2>What matters for LangGraph</h2>
+    <p>LangGraph gives you stateful agent flows with graph-based orchestration, but you still need a reliable way to verify graph behavior after prompt, model, tool, or node changes. EvalView provides that regression loop with a dedicated LangGraph adapter featuring auto-detection, streaming support, and native thread tracking.</p>
+    <h2>What matters for LangGraph agents</h2>
+    <p>LangGraph agents have unique testing needs beyond simple input/output checks:</p>
     <ul>
-      <li>state-driven multi-turn flows</li>
-      <li>tool-node selection and sequence</li>
-      <li>branching behavior and fallbacks</li>
-      <li>user-visible output regressions</li>
-      <li>cost and latency changes by run path</li>
+      <li><strong>state-driven multi-turn flows</strong> — does the graph handle conversation state correctly?</li>
+      <li><strong>tool-node selection and sequence</strong> — does the agent route to the right nodes?</li>
+      <li><strong>branching behavior and fallbacks</strong> — do conditional edges fire correctly?</li>
+      <li><strong>user-visible output regressions</strong> — does the final response degrade?</li>
+      <li><strong>cost and latency changes by run path</strong> — does a specific graph path cost more after changes?</li>
     </ul>
-    <h2>Recommended workflow</h2>
+    <h2>Quick start with LangGraph</h2>
+    <p>EvalView auto-detects LangGraph agents. Start your agent server, then connect and test:</p>
+    <pre><code># Start your LangGraph agent
+uvicorn main:app --reload --port 8000
+
+# Connect EvalView (auto-detects LangGraph)
+evalview connect --endpoint http://localhost:8000/api/chat
+
+# Generate tests from the running agent
+evalview generate
+
+# Snapshot approved behavior
+evalview snapshot tests/generated --approve-generated
+
+# Check for regressions
+evalview check tests/generated</code></pre>
+    <h2>CI integration for LangGraph</h2>
+    <p>Add regression checks to your CI pipeline so every PR is validated:</p>
+    <pre><code>- name: Check for regressions
+  uses: hidai25/eval-view@v0.6.0
+  with:
+    openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+    fail-on: REGRESSION</code></pre>
+    <h2>Multi-turn test cases for LangGraph</h2>
+    <p>Multi-turn tests are especially useful for LangGraph because they verify state management across conversation turns:</p>
+    <pre><code>name: refund-needs-order-number
+turns:
+  - query: "I want a refund"
+    expected:
+      output:
+        contains: ["order number"]
+  - query: "Order 4812"
+    expected:
+      tools: ["lookup_order", "check_policy"]
+      forbidden_tools: ["delete_order"]
+      output:
+        contains: ["refund", "processed"]</code></pre>
+    <h2>Troubleshooting</h2>
     <ul>
-      <li>generate a draft suite from the running agent</li>
-      <li>review and approve snapshots</li>
-      <li>run regression checks in GitHub Actions on every pull request</li>
+      <li><strong>"Cannot connect to agent"</strong> — verify your server is running with curl and check the endpoint path</li>
+      <li><strong>"Wrong endpoint"</strong> — update .evalview/config.yaml with the correct URL</li>
+      <li><strong>"Tool names don't match"</strong> — run with --verbose to see actual API responses, then update YAML files</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/ai-agent-regression-testing">Regression Testing Guide</a> | <a href="/">Back to EvalView homepage</a></p>
     </div>
     
 </body>

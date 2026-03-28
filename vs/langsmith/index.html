@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Comparisons",
+      "item": "https://evalview.com/vs"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "EvalView vs LangSmith"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "EvalView vs LangSmith",
+  "description": "Compare EvalView vs LangSmith. Use LangSmith for observability and traces. Use EvalView for regression testing, golden baselines, and CI gating for AI agents.",
+  "url": "https://evalview.com/vs/langsmith",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,25 +288,40 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>EvalView vs LangSmith</h1>
-    <p>LangSmith is strongest for observability, debugging, and the broader LangChain ecosystem. EvalView is strongest for regression testing: generate tests, snapshot behavior, diff tool paths, and block regressions in CI/CD.</p>
+    <p>If you are comparing EvalView vs LangSmith, the key distinction is simple: LangSmith is strongest for agent observability, debugging, prompt workflows, and the broader LangChain/LangGraph ecosystem. EvalView is strongest for regression testing: generate tests, snapshot agent behavior, diff tool paths, and block regressions in CI/CD.</p>
     <h2>Choose LangSmith when</h2>
     <ul>
-      <li>you want trace collection and debugging dashboards</li>
-      <li>you are already deep in LangChain or LangGraph</li>
-      <li>you want a broader platform for prompt iteration and agent development</li>
+      <li>you want trace collection and debugging dashboards for LLM calls</li>
+      <li>you are already deep in LangChain or LangGraph and want tight integration</li>
+      <li>you want a broader platform for prompt iteration, dataset management, and agent development</li>
+      <li>you need production monitoring with trace-level visibility into every LLM call</li>
     </ul>
     <h2>Choose EvalView when</h2>
     <ul>
-      <li>you need AI agent regression testing</li>
-      <li>you want golden baseline testing for agents</li>
-      <li>you care about tool-call, sequence, output, cost, and latency diffs</li>
-      <li>you want a lightweight CI gate instead of a larger platform decision</li>
+      <li>you need AI agent regression testing that catches silent behavior changes</li>
+      <li>you want golden baseline testing — snapshot known-good behavior and diff against it</li>
+      <li>you care about tool-call, sequence, output, cost, and latency diffs in a single report</li>
+      <li>you want to generate a draft test suite from just an endpoint URL or traffic logs</li>
+      <li>you want a lightweight CI gate that blocks broken agents before merge</li>
+    </ul>
+    <h2>Best fit together</h2>
+    <p>Many teams use both tools. LangSmith handles observability and development traces — showing you what your agent did in production. EvalView handles regression gating — telling you whether your agent broke before it reaches production. They solve different problems in the agent lifecycle.</p>
+    <h2>Key difference: observability vs testing</h2>
+    <p>LangSmith answers "what happened?" after the fact. EvalView answers "did anything change?" before you ship. Normal tests catch crashes and tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 OK but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update.</p>
+    <h2>Feature comparison</h2>
+    <ul>
+      <li><strong>Golden baseline diffing</strong> — EvalView: Yes (core feature). LangSmith: No.</li>
+      <li><strong>Tool-call and sequence regression detection</strong> — EvalView: Yes. LangSmith: No (traces only).</li>
+      <li><strong>PR comments with regression alerts</strong> — EvalView: Yes. LangSmith: No.</li>
+      <li><strong>Test generation from a live agent</strong> — EvalView: Yes. LangSmith: No.</li>
+      <li><strong>Fully offline operation</strong> — EvalView: Yes (with Ollama). LangSmith: No (cloud-only).</li>
+      <li><strong>Production trace observability</strong> — EvalView: No. LangSmith: Yes (core feature).</li>
     </ul>
     <h2>EvalView workflow</h2>
     <pre><code>evalview generate --agent http://localhost:8000

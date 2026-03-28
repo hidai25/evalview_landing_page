@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://evalview.com/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "MCP Server Testing"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "MCP Server Testing",
+  "description": "Test MCP servers and MCP-based agents with EvalView. Generate regression suites, verify tool usage, and catch tool contract drift before deployment.",
+  "url": "https://evalview.com/mcp-server-testing",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,29 +288,51 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>MCP Server Testing</h1>
-    <p>MCP servers introduce a clean tool contract, but that does not remove regression risk. You still need tests for tool discovery, tool choice, argument shape, safety boundaries, and multi-step behavior.</p>
-    <h2>What teams need to catch</h2>
+    <p>When your AI agent depends on external MCP servers you do not control, those servers can change their tool definitions at any time — rename parameters, remove tools, add required fields. Your agent tests pass today and fail tomorrow. EvalView solves this with MCP contract testing.</p>
+    <h2>The problem with external MCP servers</h2>
+    <p>MCP servers introduce a clean tool contract, but that does not remove regression risk. When a server you depend on changes its interface, your agent breaks silently. Your tests still pass because your code did not change — but the server did.</p>
+    <h2>MCP contract testing</h2>
+    <p>EvalView captures a snapshot of a server's tool definitions and diffs against it on every CI run. If the interface changed, you know immediately — before running your full test suite.</p>
+    <pre><code># 1. Snapshot a server's tool contract
+evalview mcp snapshot "npx:@modelcontextprotocol/server-github" --name server-github
+
+# 2. Check for interface drift
+evalview mcp check server-github
+
+# 3. Use in CI to abort before testing against broken interfaces
+evalview run tests/ --contracts --fail-on "REGRESSION,CONTRACT_DRIFT"</code></pre>
+    <h2>What contract drift looks like</h2>
+    <pre><code>CONTRACT_DRIFT - 2 breaking change(s)
+  REMOVED: create_pull_request - tool no longer available
+  CHANGED: list_issues - new required parameter 'owner'</code></pre>
+    <h2>Supported transport types</h2>
     <ul>
-      <li>wrong tool selection</li>
-      <li>tool argument drift</li>
-      <li>forbidden tool usage in sensitive scenarios</li>
-      <li>clarification turns before tool execution</li>
-      <li>behavior changes after tool or prompt updates</li>
+      <li><strong>stdio</strong> — npx:@modelcontextprotocol/server-filesystem /tmp</li>
+      <li><strong>HTTP</strong> — http://localhost:8080</li>
+      <li><strong>Command</strong> — stdio:python my_server.py</li>
     </ul>
-    <h2>Why EvalView is a good fit</h2>
+    <h2>Agent behavior testing for MCP</h2>
+    <p>Beyond contract testing, EvalView also tests the agent that uses MCP servers:</p>
     <ul>
-      <li>MCP-aware discovery for generation</li>
-      <li>tool-path clustering into draft tests</li>
-      <li>forbidden_tools contracts for safety-sensitive flows</li>
-      <li>CI-friendly regression checks for MCP agents</li>
+      <li><strong>wrong tool selection</strong> — did the agent pick the right MCP tool?</li>
+      <li><strong>tool argument drift</strong> — did the agent pass the correct parameters?</li>
+      <li><strong>forbidden tool usage</strong> — did the agent use a dangerous tool in a sensitive scenario?</li>
+      <li><strong>clarification turns</strong> — did the agent ask for missing info before calling a tool?</li>
+      <li><strong>behavior changes after server updates</strong> — did a server update break your agent flow?</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    <h2>CLI reference</h2>
+    <pre><code>evalview mcp snapshot &lt;endpoint&gt; --name &lt;name&gt;   # Capture contract
+evalview mcp check &lt;name&gt;                         # Check for drift
+evalview mcp list                                  # List contracts
+evalview mcp show &lt;name&gt;                          # Show details
+evalview mcp delete &lt;name&gt;                        # Remove contract</code></pre>
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/tool-calling-agent-testing">Tool-Calling Agent Testing</a> | <a href="/">Back to EvalView homepage</a></p>
     </div>
     
 </body>

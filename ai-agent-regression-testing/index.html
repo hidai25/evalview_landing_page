@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://evalview.com/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI Agent Regression Testing"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "AI Agent Regression Testing",
+  "description": "AI agent regression testing with EvalView. Generate tests, snapshot agent behavior, diff tool paths, and stop broken agent changes before production.",
+  "url": "https://evalview.com/ai-agent-regression-testing",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,33 +288,57 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>AI Agent Regression Testing</h1>
-    <p>Regression testing for AI agents is not just output scoring. It is verifying that tool use, turn sequence, safety boundaries, latency, and cost still behave the way your team approved.</p>
+    <p>Regression testing for AI agents is not just output scoring. It is verifying that tool use, turn sequence, safety boundaries, latency, and cost still behave the way your team approved. The hardest bugs are silent — the agent returns 200 OK but takes a completely different tool path.</p>
     <h2>What should be regression-tested</h2>
+    <p>AI agent regression testing covers five critical dimensions that traditional tests miss:</p>
     <ul>
-      <li>tool usage and tool order</li>
-      <li>multi-turn clarification flows</li>
-      <li>refusal and safety behavior</li>
-      <li>cost and latency drift</li>
-      <li>final output shape for user-visible responses</li>
+      <li><strong>tool usage and tool order</strong> — did the agent call lookup_order before process_refund?</li>
+      <li><strong>multi-turn clarification flows</strong> — did the agent ask for the order number before acting?</li>
+      <li><strong>refusal and safety behavior</strong> — did the agent refuse to delete data without confirmation?</li>
+      <li><strong>cost and latency drift</strong> — did token usage spike after a model swap?</li>
+      <li><strong>final output shape</strong> — did the user-visible response degrade in quality?</li>
     </ul>
-    <h2>Why EvalView fits this workflow</h2>
+    <h2>How golden baseline testing works</h2>
+    <p>EvalView captures a snapshot of known-good agent behavior and automatically detects when future runs deviate. The first two scoring layers work without LLM-as-judge or API keys — pure deterministic tool-call and sequence comparison.</p>
+    <pre><code># 1. Save current behavior as baseline
+evalview snapshot
+
+# 2. Make changes to your agent (prompt, model, tools)
+
+# 3. Check for regressions
+evalview check</code></pre>
+    <h2>Four regression statuses</h2>
     <ul>
-      <li>golden baseline testing for agents</li>
-      <li>draft suite generation from a URL or logs</li>
-      <li>approval-gated snapshots before locking in expectations</li>
-      <li>CI comments that surface behavior changes in pull requests</li>
+      <li><strong>PASSED</strong> — behavior matches the golden baseline. Ship with confidence.</li>
+      <li><strong>TOOLS_CHANGED</strong> — the agent called different tools. Review the diff before deploying.</li>
+      <li><strong>OUTPUT_CHANGED</strong> — same tools but different output. Review the diff.</li>
+      <li><strong>REGRESSION</strong> — score dropped significantly. Fix before shipping.</li>
     </ul>
-    <h2>Recommended commands</h2>
-    <pre><code>evalview generate --agent http://localhost:8000
-evalview snapshot tests/generated --approve-generated
-evalview check tests/generated</code></pre>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    <h2>Example regression output</h2>
+    <pre><code>  ✓ login-flow           PASSED
+  ⚠ refund-request       TOOLS_CHANGED
+      - lookup_order → check_policy → process_refund
+      + lookup_order → check_policy → process_refund → escalate_to_human
+  ✗ billing-dispute      REGRESSION  -30 pts
+      Score: 85 → 55  Output similarity: 35%</code></pre>
+    <h2>Configurable strictness</h2>
+    <pre><code># Default: fail only on score regressions
+evalview check --fail-on REGRESSION
+
+# Stricter: also fail on tool changes
+evalview check --fail-on REGRESSION,TOOLS_CHANGED
+
+# Strictest: fail on any change
+evalview check --strict</code></pre>
+    <h2>Why this matters</h2>
+    <p>Normal tests catch crashes. Tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update. These silent regressions are the most dangerous because they look fine in logs but produce wrong results for users.</p>
+    <p><a href="/ai-agent-testing-ci-cd">CI/CD Integration Guide</a> | <a href="/tool-calling-agent-testing">Tool-Calling Agent Testing</a> | <a href="/">Back to EvalView homepage</a></p>
     </div>
     
 </body>

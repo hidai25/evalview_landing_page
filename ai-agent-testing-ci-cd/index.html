@@ -51,6 +51,58 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://evalview.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://evalview.com/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI Agent Testing in CI/CD"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "AI Agent Testing in CI/CD",
+  "description": "AI agent testing in CI/CD with EvalView. Generate tests, snapshot behavior, detect regressions, and block broken tool-calling agents before production.",
+  "url": "https://evalview.com/ai-agent-testing-ci-cd",
+  "image": "https://evalview.com/og-image.png",
+  "datePublished": "2026-03-01",
+  "dateModified": "2026-03-28",
+  "author": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "EvalView",
+    "url": "https://evalview.com",
+    "logo": "https://evalview.com/logo.png"
+  }
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "EvalView",
   "url": "https://evalview.com",
@@ -60,11 +112,18 @@
   "sameAs": [
     "https://github.com/hidai25/eval-view",
     "https://pypi.org/project/evalview/",
-    "https://x.com/Hidai_barmor",
-    "https://dev.to/evalview",
-    "https://medium.com/@evalview",
-    "https://glama.ai/mcp/servers/@hidai25/evalview-mcp"
-  ]
+    "https://x.com/Hidai_barmor"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Hidai Bar-Mor",
+    "url": "https://x.com/Hidai_barmor",
+    "sameAs": [
+      "https://github.com/hidai25",
+      "https://x.com/Hidai_barmor"
+    ]
+  },
+  "foundingDate": "2025"
 }
     </script>
     <script type="application/ld+json">
@@ -219,7 +278,6 @@
   </script>
 
 
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -230,36 +288,62 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-CdG6qe83.js"></script>
+  <script type="module" crossorigin src="/assets/index-BmACIlMC.js"></script>
 </head>
   <body>
     <div id="root"></div>
     <div id="static-content" data-prerendered="true" style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;color:#f8fafc;">
     <h1>AI Agent Testing in CI/CD</h1>
-    <p>If you are looking for AI agent testing in CI/CD, the practical problem is not just "does the output look okay?" It is "did my agent behavior change in a way that should block this merge?" EvalView is built for that workflow.</p>
+    <p>The practical problem with AI agent testing in CI/CD is not just "does the output look okay?" It is "did my agent behavior change in a way that should block this merge?" EvalView is built for that workflow — it integrates with GitHub Actions, posts PR comments with regression alerts, and provides proper exit codes for CI gating.</p>
     <h2>What EvalView tests in CI</h2>
+    <p>Every CI run checks six dimensions of agent behavior against the approved golden baseline:</p>
     <ul>
-      <li>tool calls</li>
-      <li>tool sequence</li>
-      <li>output drift</li>
-      <li>cost changes</li>
-      <li>latency changes</li>
-      <li>safety contracts like forbidden_tools</li>
+      <li><strong>tool calls</strong> — did the agent call the right tools?</li>
+      <li><strong>tool sequence</strong> — did it call them in the right order?</li>
+      <li><strong>output drift</strong> — did the response quality degrade?</li>
+      <li><strong>cost changes</strong> — did token usage or API costs spike?</li>
+      <li><strong>latency changes</strong> — did the agent slow down significantly?</li>
+      <li><strong>safety contracts</strong> — did the agent use forbidden tools?</li>
     </ul>
-    <h2>Recommended workflow</h2>
-    <pre><code>evalview generate --agent http://localhost:8000
-evalview snapshot tests/generated --approve-generated
-evalview check --json --fail-on REGRESSION
-evalview ci comment --results tests/generated/generated.report.json</code></pre>
-    <h2>Works especially well for</h2>
+    <h2>GitHub Actions setup</h2>
+    <p>Add this workflow to your repository. It runs regression checks on every PR and push to main:</p>
+    <pre><code># .github/workflows/evalview.yml
+name: EvalView Regression Check
+on: [pull_request, push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for regressions
+        uses: hidai25/eval-view@v0.6.0
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          fail-on: REGRESSION</code></pre>
+    <h2>What PR comments show</h2>
+    <p>When EvalView detects changes, it posts a detailed PR comment with cost spike alerts, latency spike alerts, model change detection, and a collapsible diff of all behavior changes. On clean runs it shows a simple PASSED summary. Comments are deduplicated — EvalView updates its existing comment instead of creating new ones on each push.</p>
+    <h2>CI exit codes</h2>
+    <p>EvalView provides proper exit codes for CI gating. Exit 0 means all tests passed. Exit 1 means regressions detected. The --fail-on flag controls which statuses block the pipeline:</p>
+    <pre><code># Only fail on score regressions (default)
+evalview check --fail-on REGRESSION
+
+# Also fail on tool changes
+evalview check --fail-on REGRESSION,TOOLS_CHANGED
+
+# Fail on any change (strictest)
+evalview check --strict</code></pre>
+    <h2>Pre-push hooks</h2>
+    <p>If you want regression blocking without CI setup, EvalView supports Git pre-push hooks:</p>
+    <pre><code>evalview install-hooks    # Pre-push regression blocking</code></pre>
+    <h2>Works with any CI system</h2>
     <ul>
-      <li>LangGraph agents</li>
-      <li>MCP servers and MCP-based agents</li>
-      <li>generic HTTP agents</li>
-      <li>tool-calling assistants</li>
-      <li>teams shipping agent changes through GitHub Actions</li>
+      <li><strong>GitHub Actions</strong> — dedicated action with PR comments and job summaries</li>
+      <li><strong>GitLab CI</strong> — use pip install evalview in your .gitlab-ci.yml</li>
+      <li><strong>CircleCI</strong> — add evalview check as a test step</li>
+      <li><strong>Any CI</strong> — EvalView is CLI-first, so it works anywhere Python runs</li>
     </ul>
-    <p><a href="/">Back to EvalView homepage</a> | <a href="https://github.com/hidai25/eval-view">View on GitHub</a></p>
+    <p><a href="/ai-agent-regression-testing">AI Agent Regression Testing Guide</a> | <a href="/langgraph-testing">LangGraph Testing Guide</a> | <a href="/">Back to EvalView homepage</a></p>
     </div>
     
 </body>
