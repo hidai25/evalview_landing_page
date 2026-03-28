@@ -1025,6 +1025,8 @@ const App: React.FC = () => {
             <a href="https://github.com/hidai25/eval-view#readme" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a>
             <button onClick={() => scrollToSection('changelog')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Changelog</button>
             <a href="https://x.com/Hidai_barmor" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
+            <button onClick={() => navigate('/privacy')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Privacy</button>
+            <button onClick={() => navigate('/terms')} className="hover:text-white transition-colors bg-transparent border-none cursor-pointer text-sm text-slate-500">Terms</button>
           </div>
 
           <div className="text-sm text-slate-600">
