@@ -501,8 +501,10 @@ evalview capture --agent http://localhost:8000/invoke --multi-turn</code></pre>
     <p>The EvalView Cloud waitlist is a notification list only. Joining does not create a service agreement or guarantee access to any future product.</p>
     <h2>Intellectual property</h2>
     <p>The EvalView name, logo, and website design are the property of Hidai Bar-Mor. The open-source software is licensed under Apache 2.0. Content on the website may be quoted with attribution.</p>
+    <h2>Disclaimer of warranties</h2>
+    <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
     <h2>Limitation of liability</h2>
-    <p>To the fullest extent permitted by law, EvalView and its maintainers are not liable for any indirect, incidental, special, or consequential damages arising from your use of the software or website.</p>
+    <p>To the fullest extent permitted by law, EvalView and its maintainers are not liable for any indirect, incidental, special, or consequential damages arising from your use of the software or website. This includes but is not limited to damages for loss of profits, data, or other intangible losses, even if we have been advised of the possibility of such damages.</p>
     <h2>Contact</h2>
     <p>Questions about these terms? Email <a href="mailto:hidai@evalview.com">hidai@evalview.com</a>.</p>
     <p><a href="/">Back to EvalView homepage</a></p>`,
