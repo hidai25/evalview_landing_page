@@ -225,8 +225,8 @@ const App: React.FC = () => {
                 <section id="pilot" aria-labelledby="pilot-heading" className="max-w-xl scroll-mt-24 border-t border-white/10 pt-5">
                   <h2 id="pilot-heading" className="text-lg font-semibold text-white">What do you still test by hand?</h2>
                   <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                    I’m Hidai, the developer behind EvalView. Send me one case you recheck after a prompt change.
-                    I’ll help turn it into a test you can keep and run in CI.
+                    Email us one case you recheck after a prompt change and tell us what your agent should do.
+                    We’ll send you an EvalView test you can run in CI and a short note on what it catches.
                   </p>
                   <PilotEmailLink placement="hero" />
                 </section>
@@ -794,7 +794,7 @@ const App: React.FC = () => {
                 <h3 className="text-xl font-semibold text-white">Have a tricky tool call in mind?</h3>
                 <p className="mt-2 text-slate-300 leading-relaxed">
                   Maybe your agent can cancel an order before it ships, but should hand it off afterward.
-                  Send me the two cases. A made-up order is plenty. I’ll set up the check and show you the diff.
+                  Send us a made-up order for each case. We’ll send back the test and a diff showing which tool your agent called in each case.
                 </p>
                 <PilotEmailLink placement="roadmap" />
              </div>
