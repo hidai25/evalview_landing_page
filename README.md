@@ -50,7 +50,7 @@ evalview_landing_page/
 ├── components/
 │   ├── CodeBlock.tsx      # YAML code example
 │   ├── Terminal.tsx       # Terminal animation
-│   └── WaitlistForm.tsx   # Email waitlist form
+│   └── PilotEmailLink.tsx # Contact link for the workflow pilot
 ├── App.tsx                # Main application
 ├── index.html             # HTML entry point
 ├── index.tsx              # React entry point
@@ -58,9 +58,9 @@ evalview_landing_page/
 └── package.json
 ```
 
-## Waitlist Integration
+## Workflow pilot
 
-The waitlist form submits emails to a Google Sheets via Google Apps Script. The script URL is configured in `components/WaitlistForm.tsx`.
+The homepage invites visitors to email Hidai one workflow to test. The email link opens a draft in the visitor’s mail app. GA4 records `pilot_email_click` with the link placement. Count replies in the inbox to measure actual inquiries.
 
 ## License
 

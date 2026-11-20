@@ -64,10 +64,10 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, showFullNav = false }) => {
             )}
           </a>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => goToSection('pilot')}
             className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/10 transition-all backdrop-blur-sm group cursor-pointer"
           >
-            <span>Join Cloud Waitlist</span>
+            <span>Try a pilot</span>
             <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Clock, Tag, Rss, Bell } from 'lucide-react';
+import { ArrowRight, Clock, Tag, Rss } from 'lucide-react';
 import { blogPosts, getFeaturedPost, getNonFeaturedPosts } from '../data/blogPosts';
 import { useNavigation } from '../hooks/router';
 import { usePageMetadata } from '../hooks/usePageMetadata';
@@ -158,14 +158,13 @@ const BlogIndex: React.FC = () => {
               </h2>
               <p className="text-slate-400 text-lg max-w-xl mx-auto mb-8 leading-relaxed">
                 Deep engineering takes on AI agent reliability, observability, and testing — no fluff, no filler.
-                Subscribe to the waitlist and we'll let you know when the first post is live.
               </p>
               <button
                 onClick={() => navigate('/')}
                 className="inline-flex items-center gap-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 px-6 py-3 rounded-full border border-cyan-500/20 hover:border-cyan-500/40 transition-all text-sm font-semibold cursor-pointer"
               >
-                <Bell className="w-4 h-4" />
-                Notify me when posts go live
+                <ArrowRight className="w-4 h-4" />
+                Explore EvalView
               </button>
             </div>
 

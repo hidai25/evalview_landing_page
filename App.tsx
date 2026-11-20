@@ -48,7 +48,7 @@ import {
   Star
 } from 'lucide-react';
 import Terminal from './components/Terminal';
-import WaitlistForm from './components/WaitlistForm';
+import PilotEmailLink from './components/PilotEmailLink';
 import CodeBlock from './components/CodeBlock';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
@@ -151,10 +151,10 @@ const App: React.FC = () => {
               )}
             </a>
             <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={() => scrollToSection('pilot')}
               className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/10 transition-all backdrop-blur-sm group"
             >
-              <span>Join Cloud Waitlist</span>
+              <span>Try a pilot</span>
               <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
@@ -222,14 +222,14 @@ const App: React.FC = () => {
                   </a>
                 </div>
 
-                {/* Secondary Action: Cloud Waitlist (Conversion Focus) */}
-                <div className="w-full pt-6 border-t border-white/5">
-                  <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    EvalView Cloud is coming soon
-                  </h3>
-                  <WaitlistForm variant="hero" />
-                </div>
+                <section id="pilot" aria-labelledby="pilot-heading" className="max-w-xl scroll-mt-24 border-t border-white/10 pt-5">
+                  <h2 id="pilot-heading" className="text-lg font-semibold text-white">What do you still test by hand?</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                    I’m Hidai, the developer behind EvalView. Send me one case you recheck after a prompt change.
+                    I’ll help turn it into a test you can keep and run in CI.
+                  </p>
+                  <PilotEmailLink placement="hero" />
+                </section>
               </div>
             </div>
             
@@ -707,7 +707,7 @@ const App: React.FC = () => {
              <div className="text-center mb-16">
                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium mb-6">
                  <Sparkles className="w-3 h-3" />
-                 Coming Q1 2026
+                 Cloud roadmap
                </div>
                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">AI Agent Monitoring & CI Integration</h2>
                <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
@@ -790,11 +790,13 @@ const App: React.FC = () => {
 
              </div>
 
-             {/* Waitlist CTA Area */}
-             <div className="max-w-3xl mx-auto text-center bg-gradient-to-b from-blue-900/20 to-transparent p-8 md:p-12 rounded-3xl border border-blue-500/20">
-                <h3 className="text-2xl font-bold text-white mb-4">Don't wait for users to report bugs.</h3>
-                <p className="text-slate-400 mb-8">Join the waitlist to get early access to EvalView Cloud in Q1 2026.</p>
-                <WaitlistForm variant="footer" />
+             <div className="max-w-2xl mx-auto text-center p-8 rounded-2xl border border-white/10">
+                <h3 className="text-xl font-semibold text-white">Have a tricky tool call in mind?</h3>
+                <p className="mt-2 text-slate-300 leading-relaxed">
+                  Maybe your agent can cancel an order before it ships, but should hand it off afterward.
+                  Send me the two cases. A made-up order is plenty. I’ll set up the check and show you the diff.
+                </p>
+                <PilotEmailLink placement="roadmap" />
              </div>
 
           </div>
@@ -828,7 +830,6 @@ const App: React.FC = () => {
 
                 {/* Cloud */}
                 <div className="glass-card p-6 rounded-2xl border-t-4 border-t-cyan-500 relative flex flex-col">
-                   <div className="absolute top-0 right-0 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">COMING Q1 2026</div>
                    <h3 className="text-xl font-bold text-white mb-2">EvalView Cloud</h3>
                    <p className="text-3xl font-bold text-white mb-4">Coming Soon</p>
                    <p className="text-sm text-slate-400 mb-6 flex-grow">Team collaboration & production monitoring.</p>
@@ -837,10 +838,9 @@ const App: React.FC = () => {
                       <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Team collaboration</li>
                       <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Slack/Email alerts</li>
                       <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Production monitoring</li>
-                      <li className="flex gap-2"><Check className="w-4 h-4 text-cyan-500"/> Early access pricing for waitlist</li>
                    </ul>
-                   <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium transition-colors">
-                      Join Waitlist for Early Pricing
+                   <button onClick={() => scrollToSection('pilot')} className="w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium transition-colors">
+                      Try a workflow with Hidai
                    </button>
                 </div>
              </div>

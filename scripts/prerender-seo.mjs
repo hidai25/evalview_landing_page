@@ -16,6 +16,8 @@ const bodyContent = {
     <p><strong>Snapshot behavior, detect regressions, block broken agents before production.</strong></p>
     <p>EvalView sends test queries to your agent, records everything (tool calls, parameters, sequence, output, cost, latency), and diffs it against a golden baseline. When something changes, you know immediately.</p>
     <p>Normal tests catch crashes. Tracing shows what happened after the fact. EvalView catches the harder class: the agent returns 200 but silently takes the wrong tool path, skips a clarification, or degrades output quality after a model update.</p>
+    <h2>What do you still test by hand?</h2>
+    <p>Send me one case you recheck after a prompt change. I’ll help turn it into a test you can keep and run in CI. <a href="mailto:hidai@evalview.com?subject=EvalView%20pilot">Email Hidai at hidai@evalview.com</a>.</p>
     <h2>Quick Start</h2>
     <pre><code>pip install evalview
 evalview init        # Detect agent, create starter suite
